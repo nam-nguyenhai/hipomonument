@@ -13,11 +13,16 @@
     "@nuxt/eslint": "1.9.0",
     "@nuxt/image": "1.11.0",
     "@nuxt/ui": "4.0.1",
+    "@tailwindcss/vite": "^4.1.14",
     "eslint": "^9.0.0",
     "nuxt": "^4.1.2",
+    "tailwindcss": "^4.1.14",
     "typescript": "^5.6.3",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1"
   },
-  "packageManager": "pnpm@8.7.5+sha1.735d4d0e6fc66c4d2d64b269b08e5995b19230ca"
+  "packageManager": "pnpm@8.7.5+sha1.735d4d0e6fc66c4d2d64b269b08e5995b19230ca",
+  "devDependencies": {
+    "nuxt-lightningcss": "^2.3.0"
+  }
 }
