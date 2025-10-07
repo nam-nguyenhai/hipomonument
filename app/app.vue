@@ -1,7 +1,17 @@
-<template>
-  <div class="text-info">
-    Hello World
+<script setup>
+</script>
 
-    <div> small price </div>
-  </div>
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
+
+<style>
+#__nuxt {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+</style>
