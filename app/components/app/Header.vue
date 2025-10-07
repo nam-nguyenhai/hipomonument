@@ -9,8 +9,8 @@
 
       <nav class="flex gap-8">
         <a href="#" class="hover:text-[#d4af37]">Domů</a>
-        <a href="#" class="hover:text-[#d4af37]">O muzeu</a>
-        <a href="#" class="hover:text-[#d4af37]">Výstavy</a>
+        <a href="#" class="hover:text-[#d4af37]">O projektu</a>
+        <a href="#" class="hover:text-[#d4af37]">Po stopách koně</a>
         <a href="#" class="hover:text-[#d4af37]">Kontakt</a>
       </nav>
     </div>
