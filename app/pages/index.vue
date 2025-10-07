@@ -24,8 +24,8 @@ const carouselSlides = [
     <AppCarousel :slides="carouselSlides" />
   </section>
 
-  <section class="container mx-auto flex flex-col md:flex-row items-center px-8 py-16 gap-8">
-    <div class="md:w-1/2">
+  <section class="container mx-auto flex flex-col md:flex-row items-center justify-center px-8 py-16 gap-8">
+    <div class="md:w-1/3">
       <h3 class="text-3xl font-serif mb-4">
         O projektu
       </h3>
@@ -38,8 +38,8 @@ const carouselSlides = [
 
   <!-- Image + Text -->
   <section class="bg-[#ece7df]">
-    <div class="container mx-auto flex flex-col md:flex-row-reverse items-center px-8 py-16 gap-8">
-      <div class="md:w-1/2">
+    <div class="container mx-auto flex flex-col md:flex-row-reverse items-center justify-center px-8 py-16 gap-8">
+      <div class="md:w-1/3">
         <h3 class="text-3xl font-serif mb-4">
           Po stopách koně
         </h3>

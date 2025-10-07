@@ -3,8 +3,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
-  ssr: false,
-
   devtools: { enabled: true },
   modules: [
     '@nuxt/eslint',
@@ -14,6 +12,8 @@ export default defineNuxtConfig({
     '@nuxtjs/leaflet',
     '@nuxt/fonts',
   ],
+
+  ssr: false,
 
   fonts: {
     families: [
