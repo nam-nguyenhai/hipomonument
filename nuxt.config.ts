@@ -8,12 +8,9 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/image',
     '@nuxt/ui',
-    'nuxt-lightningcss',
     '@nuxtjs/leaflet',
     '@nuxt/fonts',
   ],
-
-  ssr: false,
 
   fonts: {
     families: [
@@ -33,5 +30,10 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
+    css: {
+      postcss: {
+        plugins: [],
+      },
+    },
   },
 })
