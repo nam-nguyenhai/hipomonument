@@ -1,0 +1,906 @@
+interface Monument {
+  id: number
+  name: string
+  shortName: string
+  type: MonumentType
+  address: string
+  coordinates: {
+    lat: number | null
+    lng: number | null
+  }
+}
+
+export enum MonumentType {
+  SOCHA = 'socha',
+  SPORTOVISTE = 'sportoviště',
+  BUDOVA = 'budova',
+  FRESKA = 'freska',
+  RELIEF = 'reliéf',
+  MISTO = 'místo',
+}
+
+export const monuments: Monument[]
+  = [
+    {
+      id: 1,
+      name: 'Pomník sv. Václava na Václavském náměstí',
+      shortName: 'sv. Václav',
+      type: MonumentType.SOCHA,
+      address: 'Václavské náměstí, Praha 1-Nové město, 110 00',
+      coordinates: {
+        lat: 50.079798,
+        lng: 14.429718,
+      },
+    },
+    {
+      id: 2,
+      name: 'Jan Žižka z Trocnova u Národního památníku na Vítkově',
+      shortName: 'Jan Žižka',
+      type: MonumentType.SOCHA,
+      address: 'U Památníku 1900, Praha 3, 130 00',
+      coordinates: {
+        lat: 50.088449,
+        lng: 14.449105,
+      },
+    },
+    {
+      id: 3,
+      name: 'Sousoší trig na Národním divadle',
+      shortName: 'Trigy na ND',
+      type: MonumentType.SOCHA,
+      address: 'Národní třída, Praha 1, 110 00',
+      coordinates: {
+        lat: 50.081309,
+        lng: 14.413426,
+      },
+    },
+    {
+      id: 4,
+      name: 'Sv. Václav Jana Jiřího Bendla',
+      shortName: 'Bendlův sv. Václav',
+      type: MonumentType.SOCHA,
+      address: 'V Pevnosti, Praha 2 - Vyšehrad, 128 00',
+      coordinates: {
+        lat: 50.065786,
+        lng: 14.417316,
+      },
+    },
+    {
+      id: 5,
+      name: 'kůň Převalského v ZOO Praha od Vincence Vinglera',
+      shortName: 'kůň Převalského',
+      type: MonumentType.SOCHA,
+      address: 'U Trojského zámku 3/120, Praha 7, 171 00',
+      coordinates: {
+        lat: 50.117458,
+        lng: 14.405263,
+      },
+    },
+    {
+      id: 6,
+      name: 'Dostihové závodiště Velká Chuchle',
+      shortName: '',
+      type: MonumentType.SPORTOVISTE,
+      address: 'Radotínská 69/34, Praha 5 - Velká Chuchle, 159 00',
+      coordinates: {
+        lat: 50.008964,
+        lng: 14.390198,
+      },
+    },
+    {
+      id: 7,
+      name: 'Jízdárna Pražského hradu',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Pražský hrad, Praha 1',
+      coordinates: {
+        lat: 50.092391,
+        lng: 14.398415,
+      },
+    },
+    {
+      id: 8,
+      name: 'Konírna Trojského zámku',
+      shortName: 'Trojský zámek',
+      type: MonumentType.BUDOVA,
+      address: 'U Trojského zámku 1/4, Praha 7 - Troja, 170 00',
+      coordinates: {
+        lat: 50.118157,
+        lng: 14.412146,
+      },
+    },
+    {
+      id: 9,
+      name: 'Koně Michala Gabriela na Šabatově náměstí',
+      shortName: 'Koně Michala Gabriela',
+      type: MonumentType.SOCHA,
+      address: 'Kyjevská 527/2, Praha 6 - Dejvice, 160 00',
+      coordinates: {
+        lat: 50.098121,
+        lng: 14.397551,
+      },
+    },
+    {
+      id: 10,
+      name: 'Casselův pomník na pražské Klamovce',
+      shortName: 'Pomník na Klamovce',
+      type: MonumentType.SOCHA,
+      address: 'Klamovka, Praha 5, 150 00',
+      coordinates: {
+        lat: 50.071563,
+        lng: 14.378395,
+      },
+    },
+    {
+      id: 11,
+      name: 'Krannerova kašna s jezdeckou sochou Františka I.',
+      shortName: 'Krannerova kašna',
+      type: MonumentType.SOCHA,
+      address: 'Smetanovo nábřeží, Praha 1 - Staré město, 110 00',
+      coordinates: {
+        lat: 50.082973,
+        lng: 14.413533,
+      },
+    },
+    {
+      id: 12,
+      name: 'Hlavní pošta Praha 1 v Jindřišské ulici',
+      shortName: 'Hlavní pošta',
+      type: MonumentType.BUDOVA,
+      address: 'Jindřišská 909/14, Praha 1 - Nové město, 110 00',
+      coordinates: {
+        lat: 50.083508,
+        lng: 14.427921,
+      },
+    },
+    {
+      id: 13,
+      name: 'Kůň Převalského v pražské ZOO od Josefa Nálepy',
+      shortName: '',
+      type: MonumentType.SOCHA,
+      address: 'U Trojského zámku 3/120, Praha 7, 171 00',
+      coordinates: {
+        lat: 50.118707,
+        lng: 14.408905,
+      },
+    },
+    {
+      id: 14,
+      name: 'Jízdárna V Cípu',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'V Cípu, Praha 1 - Nové město, 110 00',
+      coordinates: {
+        lat: 50.083756,
+        lng: 14.426723,
+      },
+    },
+    {
+      id: 15,
+      name: 'Jezdecká socha sv. Václava na zahradě zámku Zbraslav',
+      shortName: 'sv. Václav - Zbraslav',
+      type: MonumentType.SOCHA,
+      address: 'Zámecký park ve Zbraslavi, Praha 5 - Zbraslav, 156 00',
+      coordinates: {
+        lat: 49.977538,
+        lng: 14.392511,
+      },
+    },
+    {
+      id: 16,
+      name: 'Lapidárium Národního muzea',
+      shortName: 'lapidárium NM',
+      type: MonumentType.BUDOVA,
+      address: 'Výstaviště 422, Praha 7 - Holešovice, 170 00',
+      coordinates: {
+        lat: 50.105627,
+        lng: 14.431184,
+      },
+    },
+    {
+      id: 17,
+      name: 'Stará královská pošta na Maltézském náměstí',
+      shortName: 'Stará pošta',
+      type: MonumentType.BUDOVA,
+      address: 'Maltézské náměstí 1/480/8, Praha 1 - Malá strana, 118 00',
+      coordinates: {
+        lat: 50.086338,
+        lng: 14.404929,
+      },
+    },
+    {
+      id: 18,
+      name: 'Poštovní stanice Běchovice',
+      shortName: 'Poštovní stanice Běchovice',
+      type: MonumentType.BUDOVA,
+      address: 'Českobrodská 1, Praha 9 - Běchovice, 190 11',
+      coordinates: {
+        lat: 50.081125,
+        lng: 14.617158,
+      },
+    },
+    {
+      id: 19,
+      name: 'Dostihové závodiště na Císařské louce',
+      shortName: 'Císařská louka',
+      type: MonumentType.SPORTOVISTE,
+      address: 'Císařská louka, Praha 5 - Smíchov, 150 00',
+      coordinates: {
+        lat: 50.06214,
+        lng: 14.413791,
+      },
+    },
+    {
+      id: 20,
+      name: 'Jízdárna Josefských kasáren',
+      shortName: 'Jízdárna Palladium',
+      type: MonumentType.BUDOVA,
+      address: 'Na Poříčí 1142/3, Praha 1 - Nové město, 110 00',
+      coordinates: {
+        lat: 50.089072,
+        lng: 14.4303,
+      },
+    },
+    {
+      id: 21,
+      name: 'závodiště na Invalidovně',
+      shortName: 'Invalidovna',
+      type: MonumentType.BUDOVA,
+      address: 'Invalidovna, Praha 8, 186 00',
+      coordinates: {
+        lat: 50.094751,
+        lng: 14.462393,
+      },
+    },
+    {
+      id: 22,
+      name: 'Jízdárna Na baště',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Hradčany, Praha 1, 110 00',
+      coordinates: {
+        lat: 50.090188,
+        lng: 14.388278,
+      },
+    },
+    {
+      id: 23,
+      name: 'Sv. Václav Davida Černého - zbořený mýtus',
+      shortName: '',
+      type: MonumentType.SOCHA,
+      address: 'Palác Lucerna, Praha 1, 110 00',
+      coordinates: {
+        lat: 50.081134,
+        lng: 14.425793,
+      },
+    },
+    {
+      id: 24,
+      name: 'Jaroslav Hašek Karla Nepraše',
+      shortName: '',
+      type: MonumentType.SOCHA,
+      address: 'Prokopovo náměstí, Praha 3 - Žižkov, 130 00',
+      coordinates: {
+        lat: 50.086527,
+        lng: 14.452641,
+      },
+    },
+    {
+      id: 25,
+      name: 'Hřebčín Xaverov',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Václava Špačka, Praha 20 - Horní Počernice, 193 00',
+      coordinates: {
+        lat: 50.098464,
+        lng: 14.623243,
+      },
+    },
+    {
+      id: 26,
+      name: 'Nostický palác',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Nosticova 471/9, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.0855,
+        lng: 14.405969,
+      },
+    },
+    {
+      id: 27,
+      name: 'Jízdárna Nostického paláce',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Nosticova 468, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.084877,
+        lng: 14.406337,
+      },
+    },
+    {
+      id: 28,
+      name: 'Stáje Nostického paláce na Maltézském náměstí',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Maltézské náměstí 292, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.086582,
+        lng: 14.405132,
+      },
+    },
+    {
+      id: 29,
+      name: 'Sv. Jiří na Pražském hradě',
+      shortName: '',
+      type: MonumentType.SOCHA,
+      address: 'Třetí nádvoří Pražského hradu, Praha 1 - Hradčany, 119 00',
+      coordinates: {
+        lat: 50.090313,
+        lng: 14.400417,
+      },
+    },
+    {
+      id: 30,
+      name: 'Galerie Konírna na Pražském hradě',
+      shortName: 'Galerie Konírna',
+      type: MonumentType.BUDOVA,
+      address: 'Druhé nádvoří Pražského hradu, Praha 1 - Hradčany, 119 00',
+      coordinates: {
+        lat: 50.090717,
+        lng: 14.398883,
+      },
+    },
+    {
+      id: 31,
+      name: 'Obrazárna Pražského hradu',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Druhé nádvoří Pražského hradu, Praha 1 - Hradčany, 119 00',
+      coordinates: {
+        lat: 50.090676,
+        lng: 14.398708,
+      },
+    },
+    {
+      id: 32,
+      name: 'Kafkův návrh sochy Jana Žižky',
+      shortName: '',
+      type: MonumentType.SOCHA,
+      address: 'Havlíčkovo nám. 700/9, Praha 3 - Žižkov, 130 00',
+      coordinates: {
+        lat: 50.084669,
+        lng: 14.454296,
+      },
+    },
+    {
+      id: 33,
+      name: 'Galerie Pelléova vila',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Pelléova 91/10, Praha 6 - Dejvice, 160 00',
+      coordinates: {
+        lat: 50.098982,
+        lng: 14.407419,
+      },
+    },
+    {
+      id: 34,
+      name: 'Arcibiskupský palác na Hradčanském náměstí',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Hradčanské náměstí 56/16, Praha 1 - Hradčany, 118 00',
+      coordinates: {
+        lat: 50.089827,
+        lng: 14.3976,
+      },
+    },
+    {
+      id: 35,
+      name: 'Restaurace u sv. Jana Nepomuckého',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Hradčanské nám. 60/12, Praha 1 - Hradčany, 118 00',
+      coordinates: {
+        lat: 50.089841,
+        lng: 14.396444,
+      },
+    },
+    {
+      id: 36,
+      name: 'Stáj Schwarzenberského paláce',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Hradčanské nám. 2, Praha 1 - Hradčany, 118 00',
+      coordinates: {
+        lat: 50.089299,
+        lng: 14.396821,
+      },
+    },
+    {
+      id: 37,
+      name: 'Sochy Adriena de Vries ve Valdštejnské zahradě',
+      shortName: '',
+      type: MonumentType.SOCHA,
+      address: 'Letenská 123/4, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.089938,
+        lng: 14.406844,
+      },
+    },
+    {
+      id: 38,
+      name: 'Galerie Valdštejnská jízdárna',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Valdštejnská 3, Praha 1 - Malá Strana, 110 00',
+      coordinates: {
+        lat: 50.091186,
+        lng: 14.408924,
+      },
+    },
+    {
+      id: 39,
+      name: 'Valdštejnský palác',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Valdštejnské nám. 4, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.09013,
+        lng: 14.405684,
+      },
+    },
+    {
+      id: 40,
+      name: 'Clam-Gallasův palác',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Husova 20, Praha 1 - Staré město, 110 00',
+      coordinates: {
+        lat: 50.086331,
+        lng: 14.417779,
+      },
+    },
+    {
+      id: 41,
+      name: 'Jízdárna Na rejdišti',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Na redišti, Praha 1 - Staré město, 110 00',
+      coordinates: {
+        lat: 50.090491,
+        lng: 14.415214,
+      },
+    },
+    {
+      id: 42,
+      name: 'Pražská koňka',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Šaldova 278, Praha 8 - Karlín, 186 00',
+      coordinates: {
+        lat: 50.095106,
+        lng: 14.454656,
+      },
+    },
+    {
+      id: 43,
+      name: 'Koně Petry Vlachynské na zahradě Fürstenberského paláce',
+      shortName: 'Koně Petry Vlachynské',
+      type: MonumentType.SOCHA,
+      address: 'Valdštejnská ulice, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.090837,
+        lng: 14.407761,
+      },
+    },
+    {
+      id: 44,
+      name: 'Velká Fürstenberská zahrada',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Valdštejnská ulice, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.09115,
+        lng: 14.408399,
+      },
+    },
+    {
+      id: 45,
+      name: 'Restaurace U labutí',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Hradčanské nám. 61/11, Praha 1 - Hradčany, 118 00',
+      coordinates: {
+        lat: 50.089873,
+        lng: 14.396065,
+      },
+    },
+    {
+      id: 46,
+      name: 'Klusácký stadion na Letné',
+      shortName: '',
+      type: MonumentType.SPORTOVISTE,
+      address: 'Praha 7 - Letná, 170 00',
+      coordinates: {
+        lat: 50.095825,
+        lng: 14.425314,
+      },
+    },
+    {
+      id: 47,
+      name: 'Štorchův dům',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Staroměstské nám. 16, Praha 1 - Staré město, 110 00',
+      coordinates: {
+        lat: 50.087256,
+        lng: 14.421983,
+      },
+    },
+    {
+      id: 48,
+      name: 'Všeobecná záložna v Holešovicích',
+      shortName: '',
+      type: MonumentType.FRESKA,
+      address: 'Dukelských hrdinů 693/37, Praha 7 - Holešovice, 170 00',
+      coordinates: {
+        lat: 50.099682,
+        lng: 14.433196,
+      },
+    },
+    {
+      id: 49,
+      name: 'Jiří z Poděbrad na Smíchově',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'U Trojice 2, Praha 5 - Smíchov, 150 00',
+      coordinates: {
+        lat: 50.071803,
+        lng: 14.394135,
+      },
+    },
+    {
+      id: 50,
+      name: 'Obecní dvůr města Královských Vinohrad',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Varšavská 200/12, Praha 2 - Vinohrady, 120 00',
+      coordinates: {
+        lat: 50.07168,
+        lng: 14.440453,
+      },
+    },
+    {
+      id: 51,
+      name: 'sv. Jiří - dům Belveder',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Kostelní 32, Praha 7 - Letná, 170 00',
+      coordinates: {
+        lat: 50.097461,
+        lng: 14.428427,
+      },
+    },
+    {
+      id: 52,
+      name: 'Jiří z Poděbrad a sv. Václav v Nuslích',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Oldřichova 5, Praha 2 - Vinohrady, 128 00',
+      coordinates: {
+        lat: 50.065684,
+        lng: 14.425268,
+      },
+    },
+    {
+      id: 53,
+      name: 'sv. Václav v ulici pplk. Sochora',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Pplk. Sochora 737/40, Praha 7 - Holešovice, 170 00',
+      coordinates: {
+        lat: 50.09997,
+        lng: 14.430824,
+      },
+    },
+    {
+      id: 54,
+      name: 'Jan Roháč z Dubé v Čechově ulici',
+      shortName: '',
+      type: MonumentType.FRESKA,
+      address: 'Čechova 5, Praha 7 - Dejvice, 170 00',
+      coordinates: {
+        lat: 50.100553,
+        lng: 14.421205,
+      },
+    },
+    {
+      id: 55,
+      name: 'sv. Václav na školním areálu v Karlíně',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Lyčkovo nám. 460/6, Praha 8 - Karlín, 186 00',
+      coordinates: {
+        lat: 50.093164,
+        lng: 14.458345,
+      },
+    },
+    {
+      id: 56,
+      name: 'Ferdinand Dobrotivý na školním areálu v KarlíněFerdinand Dobrotivý on the campus in Karlín',
+      shortName: '',
+      type: MonumentType.FRESKA,
+      address: 'Lyčkovo nám. 460/6, Praha 8 - Karlín, 186 00',
+      coordinates: {
+        lat: 50.093164,
+        lng: 14.458345,
+      },
+    },
+    {
+      id: 57,
+      name: 'Fricův dům v Nuslích',
+      shortName: '',
+      type: MonumentType.FRESKA,
+      address: 'Sezimova 11, Praha 4 - Nusle, 140 00',
+      coordinates: {
+        lat: 50.063671,
+        lng: 14.440112,
+      },
+    },
+    {
+      id: 58,
+      name: 'reliéfy koní v Libni',
+      shortName: '',
+      type: MonumentType.RELIEF,
+      address: 'V Zahradách 22, Praha 8 - Libeň, 180 00',
+      coordinates: {
+        lat: 50.115333,
+        lng: 14.473475,
+      },
+    },
+    {
+      id: 59,
+      name: 'Vaňhův dům v Holešovicích',
+      shortName: '',
+      type: MonumentType.FRESKA,
+      address: 'Dukelských hrdinů 972/20, Praha 7 - Holešovice, 170 00',
+      coordinates: {
+        lat: 50.100111,
+        lng: 14.433391,
+      },
+    },
+    {
+      id: 60,
+      name: 'Stárkovy domy v Holešovicích',
+      shortName: '',
+      type: MonumentType.FRESKA,
+      address: 'Dukelských hrdinů 903-905/44-46, Praha 7 - Holešovice, 170 00',
+      coordinates: {
+        lat: 50.102595,
+        lng: 14.432637,
+      },
+    },
+    {
+      id: 61,
+      name: 'sv. Václav Na Výtoni',
+      shortName: '',
+      type: MonumentType.RELIEF,
+      address: 'Na Hrobci 2034/7, Praha 2 - Nové Město, 120 00',
+      coordinates: {
+        lat: 50.068341,
+        lng: 14.416615,
+      },
+    },
+    {
+      id: 62,
+      name: 'sv. Václav ve Vršovicích',
+      shortName: '',
+      type: MonumentType.RELIEF,
+      address: 'Kodaňská 23, Praha 10 - Vršovice, 100 00',
+      coordinates: {
+        lat: 50.071337,
+        lng: 14.454097,
+      },
+    },
+    {
+      id: 63,
+      name: 'Lovecký motiv v Bubenči',
+      shortName: '',
+      type: MonumentType.FRESKA,
+      address: 'Bubenčská 21, Praha 6 - Dejvice, 160 00',
+      coordinates: {
+        lat: 50.099942,
+        lng: 14.404114,
+      },
+    },
+    {
+      id: 64,
+      name: 'Schnirchův dům',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Mikovcova ul. 548, Praha 2 - Vinohrady, 120 00',
+      coordinates: {
+        lat: 50.076531,
+        lng: 14.43113,
+      },
+    },
+    {
+      id: 65,
+      name: 'Rudolfovy konírny v Královské zahradě',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'U Prašného mostu, Praha 1 - Hradčany, 118 00',
+      coordinates: {
+        lat: 50.091762,
+        lng: 14.398608,
+      },
+    },
+    {
+      id: 66,
+      name: 'Colloredo-Mansfeldský palác',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Karlova 189/2, Praha 1 - Staré město, 110 00',
+      coordinates: {
+        lat: 50.086057,
+        lng: 14.414587,
+      },
+    },
+    {
+      id: 67,
+      name: 'Míčovna Pražského hradu',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Královská zahrada, Praha 1 - Letná, 118 00',
+      coordinates: {
+        lat: 50.092561,
+        lng: 14.401036,
+      },
+    },
+    {
+      id: 68,
+      name: 'Jezdecké schodiště Vladislavského sálu',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Nám. U Svatého Jiří 1, Praha 1 - Hradčany, 119 00',
+      coordinates: {
+        lat: 50.090985,
+        lng: 14.401858,
+      },
+    },
+    {
+      id: 69,
+      name: 'Jezdecké závodiště na Trojském ostrově',
+      shortName: '',
+      type: MonumentType.SPORTOVISTE,
+      address: 'Císařský ostrov, Praha 7, 170 00',
+      coordinates: {
+        lat: 50.112563,
+        lng: 14.418204,
+      },
+    },
+    {
+      id: 70,
+      name: 'Letenský kolotoč',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Kostelní ul., Praha 7 - Letná, 170 00',
+      coordinates: {
+        lat: 50.096582,
+        lng: 14.4252,
+      },
+    },
+    {
+      id: 71,
+      name: 'Nájezdová rampa pro kočáry u Rudolfina',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Alšovo nábř. 12, Praha 1 - Josefov, 110 00',
+      coordinates: {
+        lat: 50.089547,
+        lng: 14.415834,
+      },
+    },
+    {
+      id: 72,
+      name: 'Jízdárna Michnova paláce',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Všehrdova 17, Praha 1 - Malá Strana, 118 00',
+      coordinates: {
+        lat: 50.083051,
+        lng: 14.40583,
+      },
+    },
+    {
+      id: 73,
+      name: 'Pražské patníky',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Týn, Praha 1 - Staré Město, 110 00',
+      coordinates: {
+        lat: 50.088,
+        lng: 14.423081,
+      },
+    },
+    {
+      id: 74,
+      name: 'Týnský dvůr - Ungelt',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Týn, Praha 1 - Staré Město, 110 00',
+      coordinates: {
+        lat: 50.088032,
+        lng: 14.423632,
+      },
+    },
+    {
+      id: 75,
+      name: 'Kasárna Na Panenské',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Pohořelec, Praha 6 - Hradčany, 169 00',
+      coordinates: {
+        lat: 50.0875,
+        lng: 14.388129,
+      },
+    },
+    {
+      id: 76,
+      name: 'Kasárna v Karlíně',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'U Sluncové, Praha 8 - Invalidovna, 186 00',
+      coordinates: {
+        lat: 50.094774,
+        lng: 14.467806,
+      },
+    },
+    {
+      id: 77,
+      name: 'Staroměstské náměstí',
+      shortName: '',
+      type: MonumentType.MISTO,
+      address: 'Staroměstské náměstí, Praha 1 - Josefov, 110 00',
+      coordinates: {
+        lat: 50.087534,
+        lng: 14.421144,
+      },
+    },
+    {
+      id: 78,
+      name: 'kasárna Na valech',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: '',
+      coordinates: {
+        lat: null,
+        lng: null,
+      },
+    },
+    {
+      id: 79,
+      name: 'palác Kinských',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: 'Staroměstské náměstí 1, Praha 1 - Staré Město, 110 15',
+      coordinates: {
+        lat: 50.08796,
+        lng: 14.42155,
+      },
+    },
+    {
+      id: 80,
+      name: 'vozatajská kaasárna ve Vršovicích',
+      shortName: '',
+      type: MonumentType.BUDOVA,
+      address: '',
+      coordinates: {
+        lat: null,
+        lng: null,
+      },
+    },
+  ]
+
+export default monuments
