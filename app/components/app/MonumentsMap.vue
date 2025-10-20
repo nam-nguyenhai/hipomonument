@@ -448,6 +448,10 @@ onMounted(() => {
 </template>
 
 <style>
+.leaflet-popup {
+  max-width: 330px;
+}
+
 /* Custom marker styling */
 .custom-marker {
   background: transparent !important;
@@ -526,8 +530,8 @@ onMounted(() => {
 
 /* Popup content responsive styling */
 .popup-content {
-  font-family: system-ui, -apple-system, sans-serif;
-  max-width: 280px;
+  font-family: poppins, sans-serif;
+  width: 260px !important;
 }
 
 .popup-image {
