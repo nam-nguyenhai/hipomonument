@@ -2,6 +2,7 @@
 
 @theme {
   --font-family-poppins: 'Poppins', serif;
+  --color-cream: #ece7df;
 }
 
 @layer base {

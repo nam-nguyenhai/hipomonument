@@ -18,7 +18,7 @@ function closeMenu() {
 
 <template>
   <header class="w-full sticky top-0 z-50 transition-all duration-300 bg-black">
-    <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-4 px-4">
+    <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-2 md:py-4 px-4">
       <AppLogo />
 
       <!-- Desktop Navigation -->
