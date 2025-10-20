@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
+const isMapVisible = ref(false)
 
 const navItems = [
   { label: 'Mapa', href: '#map' },
@@ -21,19 +22,44 @@ function handleScroll() {
   isScrolled.value = window.scrollY > 20
 }
 
+let mapObserver: IntersectionObserver | null = null
+
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+
+  // Observe the map section to hide header when it's visible
+  const mapSection = document.querySelector('.map-section')
+  if (mapSection) {
+    mapObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isMapVisible.value = entry.isIntersecting && entry.intersectionRatio > 0.3
+        })
+      },
+      {
+        threshold: [0, 0.3, 0.5, 1],
+        rootMargin: '-80px 0px 0px 0px', // Account for header height
+      },
+    )
+    mapObserver.observe(mapSection)
+  }
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  if (mapObserver) {
+    mapObserver.disconnect()
+  }
 })
 </script>
 
 <template>
   <header
-    class="w-full sticky top-0 z-50 transition-all duration-300 bg-black"
-    :class="{ 'shadow-lg': isScrolled }"
+    class="w-full sticky top-0 z-50 transition-all duration-500 bg-black"
+    :class="{
+      'shadow-lg': isScrolled,
+      'md:translate-y-0 md:opacity-100 md:pointer-events-auto -translate-y-full opacity-0 pointer-events-none': isMapVisible,
+    }"
   >
     <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-2 md:py-4 px-4">
       <AppLogo />
