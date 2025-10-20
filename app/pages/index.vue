@@ -6,6 +6,8 @@
 
   <AppPartnership />
 
+  <AppRecommendedPlaces />
+
   <!-- <section class="py-8 bg-gray-50">
     <div class="container mx-auto px-4 mb-8">
       <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
