@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 const isMenuOpen = ref(false)
+
+const navItems = [
+  { label: 'O projektu', href: '#' },
+  { label: 'Mapa', href: '#map' },
+  { label: 'Doporučená místa', href: '#' },
+]
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -13,16 +17,20 @@ function closeMenu() {
 </script>
 
 <template>
-  <header class="bg-black w-full relative">
+  <header class="w-full sticky top-0 z-50 transition-all duration-300 bg-black">
     <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-4 px-4">
       <AppLogo />
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex gap-8">
-        <a href="#" class="hover:text-[#d4af37] transition-colors">Domů</a>
-        <a href="#" class="hover:text-[#d4af37] transition-colors">O projektu</a>
-        <a href="#" class="hover:text-[#d4af37] transition-colors">Po stopách koně</a>
-        <a href="#" class="hover:text-[#d4af37] transition-colors">Kontakt</a>
+        <a
+          v-for="item in navItems"
+          :key="item.label"
+          :href="item.href"
+          class="hover:text-[#d4af37] transition-colors"
+        >
+          {{ item.label }}
+        </a>
       </nav>
 
       <!-- Hamburger Button (Mobile) -->
@@ -62,32 +70,13 @@ function closeMenu() {
       >
         <div class="container mx-auto px-4 py-6 flex flex-col gap-4">
           <a
-            href="#"
+            v-for="item in navItems"
+            :key="item.label"
+            :href="item.href"
             class="text-white hover:text-[#d4af37] transition-colors py-2 text-lg"
             @click="closeMenu"
           >
-            Domů
-          </a>
-          <a
-            href="#"
-            class="text-white hover:text-[#d4af37] transition-colors py-2 text-lg"
-            @click="closeMenu"
-          >
-            O projektu
-          </a>
-          <a
-            href="#"
-            class="text-white hover:text-[#d4af37] transition-colors py-2 text-lg"
-            @click="closeMenu"
-          >
-            Po stopách koně
-          </a>
-          <a
-            href="#"
-            class="text-white hover:text-[#d4af37] transition-colors py-2 text-lg"
-            @click="closeMenu"
-          >
-            Kontakt
+            {{ item.label }}
           </a>
         </div>
       </nav>
