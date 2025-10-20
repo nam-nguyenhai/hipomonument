@@ -24,7 +24,10 @@ export default defineNuxtConfig({
     ],
   },
 
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    'leaflet/dist/leaflet.css',
+  ],
 
   vite: {
     plugins: [
@@ -34,6 +37,9 @@ export default defineNuxtConfig({
       postcss: {
         plugins: [],
       },
+    },
+    optimizeDeps: {
+      include: ['leaflet'],
     },
   },
 })

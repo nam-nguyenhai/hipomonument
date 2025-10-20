@@ -47,6 +47,19 @@ const carouselSlides = [
     </div>
   </section>
 
+  <!-- Map Section -->
+  <section class="py-8 bg-gray-50">
+    <div class="container mx-auto px-4 mb-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
+        Mapa památek
+      </h2>
+      <p class="text-center text-lg text-gray-600 max-w-2xl mx-auto">
+        Prozkoumejte interaktivní mapu všech míst spojených s koňmi v Praze a okolí
+      </p>
+    </div>
+    <AppMonumentsMap />
+  </section>
+
   <!-- O projektu Section -->
   <section class="container mx-auto flex flex-col md:flex-row items-center justify-center px-8 py-16 gap-8">
     <div class="md:w-1/2">

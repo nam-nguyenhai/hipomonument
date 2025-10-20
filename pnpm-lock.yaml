@@ -23,9 +23,18 @@ dependencies:
   '@tailwindcss/vite':
     specifier: ^4.1.14
     version: 4.1.14(vite@7.1.9)
+  '@types/leaflet.markercluster':
+    specifier: ^1.5.6
+    version: 1.5.6
   embla-carousel-vue:
     specifier: ^8.6.0
     version: 8.6.0(vue@3.5.22)
+  leaflet:
+    specifier: ^1.9.4
+    version: 1.9.4
+  leaflet.markercluster:
+    specifier: ^1.5.3
+    version: 1.5.3(leaflet@1.9.4)
   nuxt:
     specifier: ^4.1.2
     version: 4.1.2(@vue/compiler-sfc@3.5.22)(eslint@9.37.0)(typescript@5.9.3)(vite@7.1.9)
@@ -46,6 +55,9 @@ devDependencies:
   '@antfu/eslint-config':
     specifier: ^5.4.1
     version: 5.4.1(@vue/compiler-sfc@3.5.22)(eslint@9.37.0)(typescript@5.9.3)
+  '@types/leaflet':
+    specifier: ^1.9.21
+    version: 1.9.21
   eslint:
     specifier: ^9.37.0
     version: 9.37.0
@@ -1806,8 +1818,8 @@ packages:
   /@nuxtjs/leaflet@1.3.2(typescript@5.9.3):
     resolution: {integrity: sha512-DaR/s7yS7HPIaiCTvs/ZSXzwtX3ZJciYQVxVrqvh5usLzZFqr/dWXPhsdkExpJIVhZ96VWkQb9aeZ+J1W90iqw==}
     dependencies:
-      '@types/leaflet': 1.9.20
-      '@vue-leaflet/vue-leaflet': 0.10.1(@types/leaflet@1.9.20)(leaflet@1.9.4)(typescript@5.9.3)
+      '@types/leaflet': 1.9.21
+      '@vue-leaflet/vue-leaflet': 0.10.1(@types/leaflet@1.9.21)(leaflet@1.9.4)(typescript@5.9.3)
       leaflet: 1.9.4
     transitivePeerDependencies:
       - typescript
@@ -2983,16 +2995,20 @@ packages:
 
   /@types/geojson@7946.0.16:
     resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
-    dev: false
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  /@types/leaflet@1.9.20:
-    resolution: {integrity: sha512-rooalPMlk61LCaLOvBF2VIf9M47HgMQqi5xQ9QRi7c8PkdIe0WrIi5IxXUXQjAdL0c+vcQ01mYWbthzmp9GHWw==}
+  /@types/leaflet.markercluster@1.5.6:
+    resolution: {integrity: sha512-I7hZjO2+isVXGYWzKxBp8PsCzAYCJBc29qBdFpquOCkS7zFDqUsUvkEOyQHedsk/Cy5tocQzf+Ndorm5W9YKTQ==}
+    dependencies:
+      '@types/leaflet': 1.9.21
+    dev: false
+
+  /@types/leaflet@1.9.21:
+    resolution: {integrity: sha512-TbAd9DaPGSnzp6QvtYngntMZgcRk+igFELwR2N99XZn7RXUdKgsXMR+28bUO0rPsWp8MIu/f47luLIQuSLYv/w==}
     dependencies:
       '@types/geojson': 7946.0.16
-    dev: false
 
   /@types/mdast@4.0.4:
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -3411,7 +3427,7 @@ packages:
     resolution: {integrity: sha512-Z1Uc8IB57Lm6k7q6KIDu/p+JWtf3xsXJqAX/5r18hYOTpJyBn0KXUR8oTJ4WFYOcDzWC9n3IflGgHowx6U6z9Q==}
     dev: false
 
-  /@vue-leaflet/vue-leaflet@0.10.1(@types/leaflet@1.9.20)(leaflet@1.9.4)(typescript@5.9.3):
+  /@vue-leaflet/vue-leaflet@0.10.1(@types/leaflet@1.9.21)(leaflet@1.9.4)(typescript@5.9.3):
     resolution: {integrity: sha512-RNEDk8TbnwrJl8ujdbKgZRFygLCxd0aBcWLQ05q/pGv4+d0jamE3KXQgQBqGAteE1mbQsk3xoNcqqUgaIGfWVg==}
     peerDependencies:
       '@types/leaflet': ^1.5.7
@@ -3420,7 +3436,7 @@ packages:
       '@types/leaflet':
         optional: true
     dependencies:
-      '@types/leaflet': 1.9.20
+      '@types/leaflet': 1.9.21
       leaflet: 1.9.4
       vue: 3.5.22(typescript@5.9.3)
     transitivePeerDependencies:
@@ -6283,6 +6299,14 @@ packages:
     engines: {node: '>= 0.6.3'}
     dependencies:
       readable-stream: 2.3.8
+    dev: false
+
+  /leaflet.markercluster@1.5.3(leaflet@1.9.4):
+    resolution: {integrity: sha512-vPTw/Bndq7eQHjLBVlWpnGeLa3t+3zGiuM7fJwCkiMFq+nmRuG3RI3f7f4N4TDX7T4NpbAXpR2+NTRSEGfCSeA==}
+    peerDependencies:
+      leaflet: ^1.3.1
+    dependencies:
+      leaflet: 1.9.4
     dev: false
 
   /leaflet@1.9.4:
