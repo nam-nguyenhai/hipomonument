@@ -157,7 +157,7 @@ async function onMapReady() {
     const L = (await import('leaflet')).default
 
     // Add all monuments as individual markers directly to the map
-    validMonuments.forEach((monument) => {
+    for (const monument of validMonuments) {
       const customIcon = L.divIcon({
         html: createCustomIcon(monument.type),
         className: 'custom-marker',
@@ -199,7 +199,7 @@ async function onMapReady() {
 
       // Add distance if user location is available
       if (userLocation.value) {
-        const distance = calculateDistance(
+        const distance = await calculateDistance(
           userLocation.value.lat,
           userLocation.value.lng,
           monument.coordinates.lat!,
@@ -227,7 +227,7 @@ async function onMapReady() {
         marker,
         type: monument.type,
       })
-    })
+    }
 
     markersAdded.value = true
 
@@ -265,17 +265,13 @@ function getTypeLabel(type: MonumentType): string {
   }
 }
 
-// Calculate distance between two coordinates using Haversine formula
-function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371 // Earth's radius in kilometers
-  const dLat = (lat2 - lat1) * Math.PI / 180
-  const dLng = (lng2 - lng1) * Math.PI / 180
-  const a
-    = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-      + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180)
-      * Math.sin(dLng / 2) * Math.sin(dLng / 2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  return R * c
+// Calculate distance between two coordinates using Leaflet's built-in method
+async function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): Promise<number> {
+  const L = (await import('leaflet')).default
+  const point1 = L.latLng(lat1, lng1)
+  const point2 = L.latLng(lat2, lng2)
+  const distanceInMeters = point1.distanceTo(point2)
+  return distanceInMeters / 1000 // Convert to kilometers
 }
 
 // Format distance for display
@@ -325,14 +321,14 @@ async function updateMarkersWithDistance() {
 
   try {
     // Update each marker's popup with distance
-    allMarkers.value.forEach((markerData) => {
+    for (const markerData of allMarkers.value) {
       const monument = validMonuments.find(m =>
         m.coordinates.lat === markerData.marker.getLatLng().lat
         && m.coordinates.lng === markerData.marker.getLatLng().lng,
       )
 
       if (monument && userLocation.value) {
-        const distance = calculateDistance(
+        const distance = await calculateDistance(
           userLocation.value.lat,
           userLocation.value.lng,
           monument.coordinates.lat!,
@@ -358,7 +354,7 @@ async function updateMarkersWithDistance() {
 
         markerData.marker.setPopupContent(popupContent)
       }
-    })
+    }
   }
   catch (error) {
     console.error('Error updating markers with distance:', error)
