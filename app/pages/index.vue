@@ -4,8 +4,9 @@
 <template>
   <AppHero />
 
-  <!-- Map Section -->
-  <section class="py-8 bg-gray-50">
+  <AppPartnership />
+
+  <!-- <section class="py-8 bg-gray-50">
     <div class="container mx-auto px-4 mb-8">
       <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
         Mapa památek
@@ -15,7 +16,7 @@
       </p>
     </div>
     <AppMonumentsMap />
-  </section>
+  </section> -->
 
   <!-- O projektu Section -->
   <!-- <section class="container mx-auto flex flex-col md:flex-row items-center justify-center px-8 py-16 gap-8">
