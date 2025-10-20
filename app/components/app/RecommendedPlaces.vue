@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { monuments } from '~/data/monuments'
 
+const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.15 })
+
 // Select 6 interesting monuments for the recommended places
 const recommendedPlaces = [
   {
@@ -37,10 +39,13 @@ const recommendedPlaces = [
 </script>
 
 <template>
-  <section class="py-16 bg-gradient-to-b from-white to-gray-50">
+  <section ref="targetElement" class="py-16 bg-gradient-to-b from-white to-gray-50">
     <div class="container mx-auto px-4 md:px-8">
       <!-- Heading -->
-      <div class="mb-12 text-center">
+      <div
+        class="mb-12 text-center transition-all duration-700 ease-out"
+        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+      >
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
           Naše tipy k objevování
         </h2>
@@ -56,9 +61,11 @@ const recommendedPlaces = [
       <!-- Grid of Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         <article
-          v-for="place in recommendedPlaces"
+          v-for="(place, index) in recommendedPlaces"
           :key="place.id"
-          class="monument-card group relative overflow-hidden rounded-lg border-2 border-[#e0d8c6] bg-[#f7f4ef] shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+          class="monument-card group relative overflow-hidden rounded-lg border-2 border-[#e0d8c6] bg-[#f7f4ef] shadow-md transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+          :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+          :style="{ transitionDelay: isVisible ? `${index * 100 + 200}ms` : '0ms' }"
         >
           <!-- Image Container -->
           <div class="relative overflow-hidden aspect-[4/3]">

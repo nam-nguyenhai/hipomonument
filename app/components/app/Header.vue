@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
 const isMenuOpen = ref(false)
+const isScrolled = ref(false)
 
 const navItems = [
   { label: 'Mapa', href: '#map' },
@@ -13,10 +16,25 @@ function toggleMenu() {
 function closeMenu() {
   isMenuOpen.value = false
 }
+
+function handleScroll() {
+  isScrolled.value = window.scrollY > 20
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
-  <header class="w-full sticky top-0 z-50 transition-all duration-300 bg-black">
+  <header
+    class="w-full sticky top-0 z-50 transition-all duration-300 bg-black"
+    :class="{ 'shadow-lg': isScrolled }"
+  >
     <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-2 md:py-4 px-4">
       <AppLogo />
 
@@ -26,22 +44,23 @@ function closeMenu() {
           v-for="item in navItems"
           :key="item.label"
           :href="item.href"
-          class="hover:text-[#d4af37] transition-colors"
+          class="hover:text-[#d4af37] transition-all duration-300 relative group"
         >
           {{ item.label }}
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#d4af37] transition-all duration-300 group-hover:w-full" />
         </a>
       </nav>
 
       <!-- Hamburger Button (Mobile) -->
       <button
-        class="md:hidden z-50 p-2"
+        class="md:hidden z-50 p-2 transition-transform duration-200 hover:scale-110"
         aria-label="Toggle menu"
         @click="toggleMenu"
       >
         <svg
           v-if="!isMenuOpen"
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
+          class="h-6 w-6 transition-transform duration-200"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -51,7 +70,7 @@ function closeMenu() {
         <svg
           v-else
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
+          class="h-6 w-6 transition-transform duration-200 rotate-90"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

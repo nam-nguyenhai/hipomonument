@@ -1,7 +1,14 @@
+<script setup lang="ts">
+const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.3 })
+</script>
+
 <template>
-  <section class="w-full bg-[#2b1e17] py-6 md:py-8">
+  <section ref="targetElement" class="w-full bg-[#2b1e17] py-6 md:py-8">
     <div class="container mx-auto px-4 md:px-8">
-      <div class="flex items-center justify-center gap-4 md:gap-8 lg:gap-12">
+      <div
+        class="flex items-center justify-center gap-4 md:gap-8 lg:gap-12 transition-all duration-700 ease-out"
+        :class="isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'"
+      >
         <!-- Logo -->
         <div class="flex-shrink-0">
           <!-- Mobile: Cropped logo -->

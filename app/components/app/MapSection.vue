@@ -1,7 +1,14 @@
+<script setup lang="ts">
+const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.2 })
+</script>
+
 <template>
-  <section class="map-section bg-[#f7f4ef] py-16">
+  <section ref="targetElement" class="map-section bg-[#f7f4ef] py-16">
     <div class="container mx-auto px-4 md:px-8">
-      <div class="text-center mb-8">
+      <div
+        class="text-center mb-8 transition-all duration-700 ease-out"
+        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+      >
         <h2 class="text-3xl md:text-4xl font-bold text-[#2b1e17]">
           Mapa památek
         </h2>
@@ -14,7 +21,10 @@
         </div>
       </div>
 
-      <div class="rounded-[12px] border border-[#c4a46e] shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden bg-white">
+      <div
+        class="rounded-[12px] border border-[#c4a46e] shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden bg-white transition-all duration-700 ease-out delay-200"
+        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+      >
         <AppMonumentsMap />
       </div>
     </div>
