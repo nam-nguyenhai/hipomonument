@@ -6,10 +6,24 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Mobile: header is smaller with py-2 */
+    scroll-padding-top: 4rem; /* 64px */
+  }
+
+  @media (min-width: 768px) {
+    html {
+      /* Desktop: header is larger with py-4 */
+      scroll-padding-top: 5rem; /* 80px */
+    }
+  }
+
   body {
     font-family: var(--font-family-poppins);
     letter-spacing: 0.01em
   }
+
 }
 
 /* Slide transitions */

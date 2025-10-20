@@ -11,7 +11,8 @@ const center = {
   lng: 14.4213,
 }
 
-const zoom = 15
+// Initial zoom (animates to 15 on load)
+const zoom = ref(12)
 
 // Map ref to access the Leaflet instance
 const mapRef = ref<any>(null)
@@ -77,7 +78,7 @@ function getMarkerColor(type: MonumentType) {
     case MonumentType.SOCHA:
       return '#d4af37' // Gold
     case MonumentType.SPORTOVISTE:
-      return '#8b4513' // Brown
+      return '#d2a679' // Light brown/tan
     case MonumentType.BUDOVA:
       return '#4a5568' // Gray
     case MonumentType.FRESKA:
@@ -109,6 +110,12 @@ function getIconSymbol(type: MonumentType) {
     default:
       return '📌' // Default pin
   }
+}
+
+// Get placeholder image per type (can be replaced with real thumbnails later)
+function getTypeImage(_type: MonumentType): string {
+  // Using a shared placeholder for now; swap by type when assets are ready
+  return '/hero.webp'
 }
 
 // Create custom icon HTML
@@ -164,8 +171,9 @@ async function onMapReady() {
 
       // Tooltip (hint) that appears on hover
       const tooltipContent = `
-        <div class="font-sans">
-          <strong>${monument.shortName || monument.name}</strong>
+        <div style="display: flex; align-items: center; gap: 8px; max-width: 240px; min-width: 150px;">
+          <img src="${getTypeImage(monument.type)}" alt="" style="width: 48px; height: 36px; object-fit: cover; border-radius: 6px; filter: sepia(0.35) contrast(1.05); flex-shrink: 0;" />
+          <strong style="flex: 1; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: break-word; hyphens: auto; min-width: 0;">${monument.shortName || monument.name}</strong>
         </div>
       `
       marker.bindTooltip(tooltipContent, {
@@ -177,13 +185,14 @@ async function onMapReady() {
 
       // Popup with detailed information
       let popupContent = `
-        <div class="font-sans max-w-xs">
-          <h3 class="font-bold text-lg mb-3">${monument.name}</h3>
-          <div class="space-y-2">
-            <p class="text-sm text-gray-600">
+        <div class="popup-content">
+          <img src="${getTypeImage(monument.type)}" alt="${monument.name.replace(/"/g, '&quot;')}" class="popup-image" />
+          <h3 class="popup-title">${monument.name}</h3>
+          <div class="popup-details">
+            <p class="popup-text">
               <strong>Typ:</strong> ${monument.type}
             </p>
-            <p class="text-sm text-gray-600">
+            <p class="popup-text">
               <strong>Místo:</strong> ${monument.address || 'Adresa není k dispozici'}
             </p>
       `
@@ -197,7 +206,7 @@ async function onMapReady() {
           monument.coordinates.lng!,
         )
         popupContent += `
-            <p class="text-sm text-blue-600">
+            <p class="popup-text popup-distance">
               <strong>Vzdálenost:</strong> ${formatDistance(distance)}
             </p>
         `
@@ -221,6 +230,15 @@ async function onMapReady() {
     })
 
     markersAdded.value = true
+
+    // Initial subtle zoom-in animation to create "discovering" effect
+    try {
+      leafletObject.setView([center.lat, center.lng], 12, { animate: false })
+      setTimeout(() => {
+        leafletObject.flyTo([center.lat, center.lng], 15, { duration: 1.4, easeLinearity: 0.25 })
+      }, 250)
+    }
+    catch {}
   }
   catch (error) {
     console.error('Error setting up map:', error)
@@ -324,7 +342,7 @@ async function updateMarkersWithDistance() {
         const popupContent = `
           <div class="font-sans max-w-xs">
             <h3 class="font-bold text-lg mb-3">${monument.name}</h3>
-            <div class="space-y-2">
+            <div class="space-y-1">
               <p class="text-sm text-gray-600">
                 <strong>Typ:</strong> ${monument.type}
               </p>
@@ -355,7 +373,7 @@ onMounted(() => {
 
 <template>
   <ClientOnly>
-    <div id="map" class="w-full h-[600px] md:h-[700px] relative">
+    <div class="w-full h-[600px] md:h-[700px] relative z-10">
       <LMap
         ref="mapRef"
         :zoom="zoom"
@@ -365,23 +383,25 @@ onMounted(() => {
         @ready="onMapReady"
       >
         <LTileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; <a href='https://carto.com/attributions'>CARTO</a>"
+          :max-zoom="19"
         />
       </LMap>
 
-      <!-- Filter/Legend - Responsive: Dropdown on mobile, Fixed panel on desktop -->
-      <div class="absolute bottom-0 left-0 right-0 md:bottom-4 md:right-4 md:left-auto bg-white md:rounded-lg shadow-lg z-[1000] md:max-w-[200px]">
-        <!-- Filter Header - Clickable on mobile -->
+      <!-- Filter/Legend - Responsive parchment panel -->
+      <div class="absolute bottom-0 left-0 right-0 md:bottom-4 md:right-4 md:left-auto bg-[#f7f4ef]/90 backdrop-blur-sm md:rounded-xl border border-[#c4a46e]/60 shadow-[0_8px_30px_rgba(0,0,0,0.08)] z-[1000] md:max-w-[260px] overflow-hidden">
+        <!-- Filter Header - Clickable on all sizes -->
         <button
-          class="w-full p-4 flex items-center justify-between md:cursor-default md:pointer-events-none"
+          class="w-full p-4 flex items-center justify-between"
           @click="toggleFilterDropdown"
         >
-          <h4 class="font-bold text-sm">
+          <h4 class="font-bold text-sm text-[#2b1e17] flex items-center gap-2">
+            <span class="inline-block w-5 h-5 rounded-full bg-[#d4af37]/30 border border-[#c4a46e]/60" />
             Filtr typů památek
           </h4>
           <svg
-            class="w-5 h-5 transition-transform duration-200 md:hidden"
+            class="w-5 h-5 transition-transform duration-200"
             :class="{ 'rotate-180': isFilterOpen }"
             fill="none"
             stroke="currentColor"
@@ -391,33 +411,25 @@ onMounted(() => {
           </svg>
         </button>
 
-        <!-- Filter Content - Collapsible on mobile, always visible on desktop -->
+        <!-- Filter Content - Collapsible on mobile, toggle on desktop too -->
         <div
-          class="overflow-hidden transition-all duration-300 md:block"
-          :class="isFilterOpen ? 'max-h-96' : 'max-h-0 md:max-h-none'"
+          class="overflow-hidden transition-all duration-300"
+          :class="isFilterOpen ? 'max-h-96' : 'max-h-0'"
         >
-          <div class="px-4 pb-4 space-y-2">
-            <label
+          <div class="p-4 grid grid-cols-1 gap-2">
+            <button
               v-for="type in Object.values(MonumentType)"
               :key="type"
-              class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition-colors"
+              class="type-chip"
+              :class="{ 'is-active': selectedTypes.has(type) }"
+              @click="toggleType(type)"
             >
-              <input
-                type="checkbox"
-                :checked="selectedTypes.has(type)"
-                class="w-4 h-4 cursor-pointer"
-                @change="toggleType(type)"
-              >
-              <div
-                class="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-xs flex-shrink-0"
-                :style="{ backgroundColor: getMarkerColor(type) }"
-              >
-                {{ getIconSymbol(type) }}
-              </div>
-              <span class="text-xs">{{ getTypeLabel(type) }}</span>
-            </label>
+              <span class="color-dot" :style="{ backgroundColor: getMarkerColor(type) }" />
+              <span class="icon">{{ getIconSymbol(type) }}</span>
+              <span class="label">{{ getTypeLabel(type) }}</span>
+            </button>
           </div>
-          <div class="px-4 pb-4 pt-2 border-t text-xs text-gray-500 text-center">
+          <div class="px-4 pb-4 pt-2 border-t border-[#c4a46e]/40 text-xs text-[#2b1e17]/70 text-center">
             {{ filteredMonuments.length }} / {{ validMonuments.length }} památek
           </div>
         </div>
@@ -436,11 +448,6 @@ onMounted(() => {
 </template>
 
 <style>
-/* Ensure the map container is properly sized */
-#map {
-  position: relative;
-}
-
 /* Custom marker styling */
 .custom-marker {
   background: transparent !important;
@@ -453,18 +460,105 @@ onMounted(() => {
   pointer-events: none !important;
 }
 
-/* Custom tooltip styling */
+/* Custom tooltip styling - parchment */
 .custom-tooltip {
-  background: rgba(0, 0, 0, 0.85) !important;
-  border: none !important;
-  border-radius: 6px !important;
-  color: white !important;
-  padding: 6px 12px !important;
+  background: #f7f4ef !important;
+  border: 1px solid #c4a46e !important;
+  border-radius: 8px !important;
+  color: #2b1e17 !important;
+  padding: 8px 12px !important;
   font-size: 13px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  white-space: normal !important;
 }
 
 .custom-tooltip::before {
-  border-top-color: rgba(0, 0, 0, 0.85) !important;
+  border-top-color: #f7f4ef !important;
+}
+
+/* Filter chips */
+.type-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(247, 244, 239, 0.8);
+  border: 1px solid rgba(196, 164, 110, 0.5);
+  color: #2b1e17;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.type-chip .color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.type-chip .icon {
+  font-size: 14px;
+}
+
+.type-chip:hover {
+  background: rgba(247, 244, 239, 1);
+  transform: translateY(-1px);
+  outline: 1px solid rgba(196, 164, 110, 0.6);
+}
+
+.type-chip.is-active {
+  background: #f7f4ef;
+  border-color: #c4a46e;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  outline: 2px solid rgba(212, 175, 55, 0.45);
+}
+
+.type-chip .label {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Popup content responsive styling */
+.popup-content {
+  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 280px;
+}
+
+.popup-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  filter: sepia(0.4) contrast(1.1);
+}
+
+.popup-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.popup-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.popup-text {
+  font-size: 13px;
+  color: #4b5563;
+  margin: 4px 0px !important;
+}
+
+.popup-distance {
+  color: #2563eb;
 }
 </style>

@@ -2,9 +2,8 @@
 const isMenuOpen = ref(false)
 
 const navItems = [
-  { label: 'O projektu', href: '#' },
   { label: 'Mapa', href: '#map' },
-  { label: 'Doporučená místa', href: '#' },
+  { label: 'Doporučená místa', href: '#recommended-places' },
 ]
 
 function toggleMenu() {

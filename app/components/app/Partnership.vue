@@ -27,8 +27,7 @@
             Ve spolupráci s
           </p>
           <p class="text-sm sm:text-base md:text-lg font-semibold leading-tight">
-            Fakultou agrobiologie, potravinových<br class="hidden sm:block">
-            a přírodních zdrojů – ČZU Praha
+            Českou zemědělskou univerzitou v Praze
           </p>
         </div>
       </div>
