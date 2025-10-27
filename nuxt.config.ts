@@ -12,6 +12,12 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
   ],
 
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.NUXT_BASE_URL,
+    },
+  },
+
   fonts: {
     families: [
       {

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import type { Monument } from '~/types/types'
+
+defineProps<{
+  monuments: Monument[]
+}>()
+
 const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.2 })
 </script>
 
@@ -25,7 +31,7 @@ const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.2 })
         class="rounded-[12px] border border-[#c4a46e] shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden bg-white transition-all duration-700 ease-out delay-200"
         :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
       >
-        <AppMonumentsMap />
+        <AppMonumentsMap :monuments="monuments" />
       </div>
     </div>
   </section>

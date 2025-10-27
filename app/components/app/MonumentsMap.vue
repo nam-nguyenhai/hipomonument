@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { monuments, MonumentType } from '~/data/monuments'
+import type { Monument } from '~/types/types'
+
+const { monuments } = defineProps<{
+  monuments: Monument[]
+}>()
 
 // Filter out monuments without coordinates
-const validMonuments = monuments.filter(m => m.coordinates.lat !== null && m.coordinates.lng !== null)
+const validMonuments = monuments.filter(m => m.latitude !== null && m.longitude !== null)
 
 // Calculate center of Prague (average of all coordinates)
 const center = {
@@ -23,7 +26,7 @@ const userLocation = ref<{ lat: number, lng: number } | null>(null)
 const locationError = ref<string | null>(null)
 
 // Filter state - all types selected by default
-const selectedTypes = ref<Set<MonumentType>>(new Set(Object.values(MonumentType)))
+const selectedTypes = ref<Set<Monument['type']>>(new Set(Object.values(['Socha', 'Sportoviště', 'Budova', 'Freska', 'Reliéf'])))
 
 // Mobile dropdown state
 const isFilterOpen = ref(false)
@@ -42,7 +45,7 @@ const filteredMonuments = computed(() => {
 const allMarkers = ref<any[]>([])
 
 // Toggle a monument type filter
-function toggleType(type: MonumentType) {
+function toggleType(type: Monument['type']) {
   if (selectedTypes.value.has(type)) {
     selectedTypes.value.delete(type)
   }
@@ -73,53 +76,43 @@ function updateMarkers() {
 }
 
 // Icon colors for different monument types
-function getMarkerColor(type: MonumentType) {
+function getMarkerColor(type: Monument['type']) {
   switch (type) {
-    case MonumentType.SOCHA:
+    case 'Socha':
       return '#d4af37' // Gold
-    case MonumentType.SPORTOVISTE:
+    case 'Sportoviště':
       return '#d2a679' // Light brown/tan
-    case MonumentType.BUDOVA:
+    case 'Budova':
       return '#4a5568' // Gray
-    case MonumentType.FRESKA:
+    case 'Freska':
       return '#e53e3e' // Red
-    case MonumentType.RELIEF:
+    case 'Reliéf':
       return '#38a169' // Green
-    case MonumentType.MISTO:
-      return '#3182ce' // Blue
     default:
       return '#718096' // Default gray
   }
 }
 
 // Get icon symbol for different monument types
-function getIconSymbol(type: MonumentType) {
+function getIconSymbol(type: Monument['type']) {
   switch (type) {
-    case MonumentType.SOCHA:
+    case 'Socha':
       return '🐴' // Horse for statues
-    case MonumentType.SPORTOVISTE:
+    case 'Sportoviště':
       return '🏇' // Horse racing for sports venues
-    case MonumentType.BUDOVA:
+    case 'Budova':
       return '🏛️' // Classical building
-    case MonumentType.FRESKA:
+    case 'Freska':
       return '🎨' // Artist palette for frescoes
-    case MonumentType.RELIEF:
+    case 'Reliéf':
       return '🗿' // Moai for reliefs
-    case MonumentType.MISTO:
-      return '📍' // Pin for places
     default:
       return '📌' // Default pin
   }
 }
 
-// Get placeholder image per type (can be replaced with real thumbnails later)
-function getTypeImage(_type: MonumentType): string {
-  // Using a shared placeholder for now; swap by type when assets are ready
-  return '/hero.webp'
-}
-
 // Create custom icon HTML
-function createCustomIcon(type: MonumentType) {
+function createCustomIcon(type: Monument['type']) {
   const color = getMarkerColor(type)
   const icon = getIconSymbol(type)
   return `
@@ -165,15 +158,18 @@ async function onMapReady() {
         iconAnchor: [18, 18],
       })
 
-      const marker = L.marker([monument.coordinates.lat!, monument.coordinates.lng!], {
+      const latitude = Number(monument.latitude)
+      const longitude = Number(monument.longitude)
+
+      const marker = L.marker([latitude, longitude], {
         icon: customIcon,
       })
 
       // Tooltip (hint) that appears on hover
       const tooltipContent = `
         <div style="display: flex; align-items: center; gap: 8px; max-width: 240px; min-width: 150px;">
-          <img src="${getTypeImage(monument.type)}" alt="" style="width: 48px; height: 36px; object-fit: cover; border-radius: 6px; filter: sepia(0.35) contrast(1.05); flex-shrink: 0;" />
-          <strong style="flex: 1; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: break-word; hyphens: auto; min-width: 0;">${monument.shortName || monument.name}</strong>
+          <img src="${getStrapiMedia(monument.image?.url || '')}" alt="" style="width: 48px; height: 36px; object-fit: cover; border-radius: 6px; filter: sepia(0.35) contrast(1.05); flex-shrink: 0;" />
+          <strong style="flex: 1; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: break-word; hyphens: auto; min-width: 0;">${monument.shortTitle || monument.title}</strong>
         </div>
       `
       marker.bindTooltip(tooltipContent, {
@@ -186,8 +182,8 @@ async function onMapReady() {
       // Popup with detailed information
       let popupContent = `
         <div class="popup-content">
-          <img src="${getTypeImage(monument.type)}" alt="${monument.name.replace(/"/g, '&quot;')}" class="popup-image" />
-          <h3 class="popup-title">${monument.name}</h3>
+          <img src="${getStrapiMedia(monument.image?.url || '')}" alt="${monument.title.replace(/"/g, '&quot;')}" class="popup-image" />
+          <h3 class="popup-title">${monument.title}</h3>
           <div class="popup-details">
             <p class="popup-text">
               <strong>Typ:</strong> ${monument.type}
@@ -197,13 +193,21 @@ async function onMapReady() {
             </p>
       `
 
+      if (monument.description) {
+        popupContent += `
+          <p class="popup-text">
+            ${monument.description}
+          </p>
+        `
+      }
+
       // Add distance if user location is available
       if (userLocation.value) {
         const distance = await calculateDistance(
           userLocation.value.lat,
           userLocation.value.lng,
-          monument.coordinates.lat!,
-          monument.coordinates.lng!,
+          latitude,
+          longitude,
         )
         popupContent += `
             <p class="popup-text popup-distance">
@@ -242,26 +246,6 @@ async function onMapReady() {
   }
   catch (error) {
     console.error('Error setting up map:', error)
-  }
-}
-
-// Get Czech label for monument type
-function getTypeLabel(type: MonumentType): string {
-  switch (type) {
-    case MonumentType.SOCHA:
-      return 'Socha'
-    case MonumentType.SPORTOVISTE:
-      return 'Sportoviště'
-    case MonumentType.BUDOVA:
-      return 'Budova'
-    case MonumentType.FRESKA:
-      return 'Freska'
-    case MonumentType.RELIEF:
-      return 'Reliéf'
-    case MonumentType.MISTO:
-      return 'Místo'
-    default:
-      return type
   }
 }
 
@@ -323,21 +307,21 @@ async function updateMarkersWithDistance() {
     // Update each marker's popup with distance
     for (const markerData of allMarkers.value) {
       const monument = validMonuments.find(m =>
-        m.coordinates.lat === markerData.marker.getLatLng().lat
-        && m.coordinates.lng === markerData.marker.getLatLng().lng,
+        m.latitude === markerData.marker.getLatLng().lat
+        && m.longitude === markerData.marker.getLatLng().lng,
       )
 
       if (monument && userLocation.value) {
         const distance = await calculateDistance(
           userLocation.value.lat,
           userLocation.value.lng,
-          monument.coordinates.lat!,
-          monument.coordinates.lng!,
+          Number(monument.latitude),
+          Number(monument.longitude),
         )
 
         const popupContent = `
           <div class="font-sans max-w-xs">
-            <h3 class="font-bold text-lg mb-3">${monument.name}</h3>
+            <h3 class="font-bold text-lg mb-3">${monument.title}</h3>
             <div class="space-y-1">
               <p class="text-sm text-gray-600">
                 <strong>Typ:</strong> ${monument.type}
@@ -414,7 +398,7 @@ onMounted(() => {
         >
           <div class="p-4 grid grid-cols-1 gap-2">
             <button
-              v-for="type in Object.values(MonumentType)"
+              v-for="type in ['Socha', 'Sportoviště', 'Budova', 'Freska', 'Reliéf']"
               :key="type"
               class="type-chip"
               :class="{ 'is-active': selectedTypes.has(type) }"
@@ -422,7 +406,7 @@ onMounted(() => {
             >
               <span class="color-dot" :style="{ backgroundColor: getMarkerColor(type) }" />
               <span class="icon">{{ getIconSymbol(type) }}</span>
-              <span class="label">{{ getTypeLabel(type) }}</span>
+              <span class="label">{{ type }}</span>
             </button>
           </div>
           <div class="px-4 pb-4 pt-2 border-t border-[#c4a46e]/40 text-xs text-[#2b1e17]/70 text-center">
