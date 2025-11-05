@@ -7,9 +7,9 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/image',
-    '@nuxt/ui',
     '@nuxtjs/leaflet',
     '@nuxt/fonts',
+    '@vueuse/nuxt',
   ],
 
   runtimeConfig: {

@@ -189,7 +189,7 @@ async function onMapReady() {
               <strong>Typ:</strong> ${monument.type}
             </p>
             <p class="popup-text">
-              <strong>Místo:</strong> ${monument.address || 'Adresa není k dispozici'}
+              <strong>Adresa:</strong> ${monument.address || ' není k dispozici'}
             </p>
       `
 
@@ -218,6 +218,7 @@ async function onMapReady() {
 
       popupContent += `
           </div>
+          ${monument.slug ? `<a href="/${monument.slug}" class="inline-flex items-center gap-2 bg-[#d4af37] hover:bg-[#c49d2e] !text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg mt-2 no-underline">Zobrazit detail <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></a>` : ''}
         </div>
       `
 
@@ -320,19 +321,22 @@ async function updateMarkersWithDistance() {
         )
 
         const popupContent = `
-          <div class="font-sans max-w-xs">
-            <h3 class="font-bold text-lg mb-3">${monument.title}</h3>
-            <div class="space-y-1">
-              <p class="text-sm text-gray-600">
+          <div class="popup-content">
+            <img src="${getStrapiMedia(monument.image?.url || '')}" alt="${monument.title.replace(/"/g, '&quot;')}" class="popup-image" />
+            <h3 class="popup-title">${monument.title}</h3>
+            <div class="popup-details">
+              <p class="popup-text">
                 <strong>Typ:</strong> ${monument.type}
               </p>
-              <p class="text-sm text-gray-600">
+              <p class="popup-text">
                 <strong>Místo:</strong> ${monument.address || 'Adresa není k dispozici'}
               </p>
-              <p class="text-sm text-blue-600">
+              ${monument.description ? `<p class="popup-text">${monument.description}</p>` : ''}
+              <p class="popup-text popup-distance">
                 <strong>Vzdálenost:</strong> ${formatDistance(distance)}
               </p>
             </div>
+            ${monument.slug ? `<a href="/${monument.slug}" class="inline-flex items-center gap-2 bg-[#d4af37] hover:bg-[#c49d2e] !text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg mt-2 no-underline">Zobrazit detail <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></a>` : ''}
           </div>
         `
 
@@ -544,5 +548,26 @@ onMounted(() => {
 
 .popup-distance {
   color: #2563eb;
+}
+
+.popup-link {
+  display: block;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #d4af37 0%, #c4a46e 100%);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: 1px solid #c4a46e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup-link:hover {
+  background: linear-gradient(135deg, #e0bc45 0%, #d4b87d 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 </style>

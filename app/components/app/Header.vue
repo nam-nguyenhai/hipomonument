@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
+import { onUnmounted, ref, watch } from 'vue'
 
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 const isMapVisible = ref(false)
 
+// Detect mobile/tablet devices (screens smaller than 1024px)
+const isMobileOrTablet = useMediaQuery('(max-width: 1023px)')
+
 const navItems = [
-  { label: 'Mapa', href: '#map' },
-  { label: 'Doporučená místa', href: '#recommended-places' },
+  { label: 'Mapa', href: '/#map' },
+  { label: 'Doporučená místa', href: '/#recommended-places' },
 ]
 
 function toggleMenu() {
@@ -24,7 +28,8 @@ function handleScroll() {
 
 let mapObserver: IntersectionObserver | null = null
 
-onMounted(() => {
+// Setup scroll listener and map observer
+function setupMobileListeners() {
   window.addEventListener('scroll', handleScroll)
 
   // Observe the map section to hide header when it's visible
@@ -43,13 +48,34 @@ onMounted(() => {
     )
     mapObserver.observe(mapSection)
   }
-})
+}
 
-onUnmounted(() => {
+// Cleanup scroll listener and map observer
+function cleanupMobileListeners() {
   window.removeEventListener('scroll', handleScroll)
   if (mapObserver) {
     mapObserver.disconnect()
+    mapObserver = null
   }
+  // Reset visibility state when switching to desktop
+  isMapVisible.value = false
+  isScrolled.value = false
+}
+
+// Watch for changes in screen size and dynamically add/remove listeners
+watch(isMobileOrTablet, (isMobile) => {
+  if (import.meta.client) {
+    if (isMobile) {
+      setupMobileListeners()
+    }
+    else {
+      cleanupMobileListeners()
+    }
+  }
+}, { immediate: true })
+
+onUnmounted(() => {
+  cleanupMobileListeners()
 })
 </script>
 
@@ -58,11 +84,13 @@ onUnmounted(() => {
     class="w-full sticky top-0 z-50 transition-all duration-500 bg-black"
     :class="{
       'shadow-lg': isScrolled,
-      'md:translate-y-0 md:opacity-100 md:pointer-events-auto -translate-y-full opacity-0 pointer-events-none': isMapVisible,
+      'md:translate-y-0 md:opacity-100 md:pointer-events-auto -translate-y-full opacity-0 pointer-events-none': isMapVisible && isMobileOrTablet,
     }"
   >
     <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-2 md:py-4 px-4">
-      <AppLogo />
+      <NuxtLink to="/">
+        <AppLogo />
+      </NuxtLink>
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex gap-8">
