@@ -93,7 +93,7 @@ function goToSlide(index: number) {
           v-for="(slide, index) in slides"
           :key="index"
           class="w-3 h-3 rounded-full transition-all duration-300"
-          :class="index === currentIndex ? 'bg-[#d4af37] w-8' : 'bg-white/50 hover:bg-white/70'"
+          :class="index === currentIndex ? 'bg-gold w-8' : 'bg-white/50 hover:bg-white/70'"
           :aria-label="`Go to slide ${index + 1}`"
           @click="goToSlide(index)"
         />

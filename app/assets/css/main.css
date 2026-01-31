@@ -1,8 +1,152 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --font-family-poppins: 'Poppins', serif;
-  --color-cream: #ece7df;
+
+  /* Brand Colors */
+  --color-gold: #d4af37;
+  --color-gold-dark: #c49d2e;
+  --color-brown-dark: #2b1e17;
+  --color-cream: #f7f4ef;
+  --color-cream-light: #ece7df;
+  --color-tan: #c4a46e;
+  --color-tan-light: #e0d8c6;
+
+  /* Custom Shadows */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-softer: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Custom prose theme using brand colors */
+@utility prose-brand {
+  --tw-prose-body: var(--color-brown-dark);
+  --tw-prose-headings: var(--color-brown-dark);
+  --tw-prose-links: var(--color-tan);
+  --tw-prose-bold: var(--color-brown-dark);
+  --tw-prose-counters: var(--color-tan);
+  --tw-prose-bullets: var(--color-tan);
+  --tw-prose-hr: var(--color-tan);
+  --tw-prose-quotes: var(--color-brown-dark);
+  --tw-prose-quote-borders: var(--color-tan);
+  --tw-prose-captions: #5a4b3e;
+  --tw-prose-code: var(--color-brown-dark);
+  --tw-prose-pre-code: var(--color-cream);
+  --tw-prose-pre-bg: #1d1611;
+  --tw-prose-th-borders: var(--color-tan-light);
+  --tw-prose-td-borders: var(--color-tan-light);
+}
+
+/* Prose brand element customizations */
+.prose-brand {
+  max-width: none;
+}
+
+.prose-brand h1 {
+  border-bottom: 1px solid var(--color-tan);
+  padding-bottom: 0.3rem;
+}
+
+.prose-brand a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-tan);
+  transition: all 0.2s ease;
+}
+
+.prose-brand a:hover {
+  color: var(--color-brown-dark);
+  border-color: var(--color-brown-dark);
+}
+
+.prose-brand blockquote {
+  background-color: var(--color-cream);
+  border-radius: 6px;
+  font-style: normal;
+}
+
+.prose-brand img {
+  border-radius: 8px;
+  box-shadow: var(--shadow-soft);
+}
+
+.prose-brand pre {
+  border-radius: 8px;
+}
+
+.prose-brand code {
+  background: var(--color-cream-light);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+}
+
+.prose-brand code::before,
+.prose-brand code::after {
+  content: none;
+}
+
+.prose-brand thead th {
+  background-color: var(--color-cream-light);
+}
+
+/* Video/iframe embeds */
+.prose-brand iframe {
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 100%;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive video container */
+.prose-brand .video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 1.5rem auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.prose-brand .video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  box-shadow: none;
+}
+
+/* Media figure for embeds */
+.prose-brand figure.media {
+  margin: 1.5rem auto;
+  max-width: 100%;
+}
+
+.prose-brand figure.media iframe {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Drop cap */
+.prose-brand p.dropcap:first-letter {
+  float: left;
+  font-size: 3rem;
+  line-height: 2.8rem;
+  padding-right: 0.4rem;
+  font-family: "Cormorant Garamond", serif;
+  color: var(--color-tan);
 }
 
 @layer base {

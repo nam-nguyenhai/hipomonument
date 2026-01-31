@@ -50,8 +50,8 @@ const recommendedPlaces = [
           Naše tipy k objevování
         </h2>
         <div class="flex items-center justify-center gap-3 mb-6">
-          <div class="h-1 w-12 bg-[#d4af37] rounded-full" />
-          <div class="h-1 w-6 bg-[#d4af37]/50 rounded-full" />
+          <div class="h-1 w-12 bg-gold rounded-full" />
+          <div class="h-1 w-6 bg-gold/50 rounded-full" />
         </div>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto">
           Navštivte nejzajímavější památky spojené s koňmi v Praze a okolí.
@@ -63,7 +63,7 @@ const recommendedPlaces = [
         <article
           v-for="(place, index) in recommendedPlaces"
           :key="place.id"
-          class="monument-card group relative overflow-hidden rounded-lg border-2 border-[#e0d8c6] bg-[#f7f4ef] shadow-md transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+          class="monument-card group relative overflow-hidden rounded-lg border-2 border-tan-light bg-cream shadow-md transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
           :style="{ transitionDelay: isVisible ? `${index * 100 + 200}ms` : '0ms' }"
         >

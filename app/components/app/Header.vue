@@ -98,10 +98,10 @@ onUnmounted(() => {
           v-for="item in navItems"
           :key="item.label"
           :href="item.href"
-          class="hover:text-[#d4af37] transition-all duration-300 relative group"
+          class="hover:text-gold transition-all duration-300 relative group"
         >
           {{ item.label }}
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#d4af37] transition-all duration-300 group-hover:w-full" />
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300 group-hover:w-full" />
         </a>
       </nav>
 
@@ -145,7 +145,7 @@ onUnmounted(() => {
             v-for="item in navItems"
             :key="item.label"
             :href="item.href"
-            class="text-white hover:text-[#d4af37] transition-colors py-2 text-lg"
+            class="text-white hover:text-gold transition-colors py-2 text-lg"
             @click="closeMenu"
           >
             {{ item.label }}

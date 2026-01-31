@@ -20,7 +20,7 @@ onMounted(() => {
             class="inline-block transition-all duration-700 ease-out"
             :class="isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'"
           >
-            <span class="inline-flex items-center gap-2 bg-[#d4af37]/10 text-[#2b1e17] px-4 py-2 rounded-full text-sm font-semibold border border-[#2b1e17]/20">
+            <span class="inline-flex items-center gap-2 bg-gold/10 text-brown-dark px-4 py-2 rounded-full text-sm font-semibold border border-brown-dark/20">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -42,7 +42,7 @@ onMounted(() => {
             class="flex items-center gap-3 transition-all duration-700 ease-out delay-200"
             :class="isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'"
           >
-            <div class="h-1 w-24 bg-[#d4af37] rounded-full" />
+            <div class="h-1 w-24 bg-gold rounded-full" />
           </div>
 
           <div
@@ -58,13 +58,13 @@ onMounted(() => {
           </div>
 
           <div class="flex gap-5 flex-wrap">
-            <BaseButton href="#map" :is-loaded="isLoaded">
+            <AppButton href="#map" :is-loaded="isLoaded">
               Zobrazit mapu
-            </BaseButton>
+            </AppButton>
 
-            <BaseButton href="#recommended-places" :is-loaded="isLoaded">
+            <AppButton href="#recommended-places" :is-loaded="isLoaded">
               Zobrazit doporučená místa
-            </BaseButton>
+            </AppButton>
           </div>
         </div>
 

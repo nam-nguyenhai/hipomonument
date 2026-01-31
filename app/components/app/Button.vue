@@ -18,7 +18,7 @@ withDefaults(defineProps<Props>(), {
   >
     <a
       :href="href"
-      class="inline-flex items-center gap-2 bg-[#d4af37] hover:bg-[#c49d2e] text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
+      class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
     >
       <slot />
       <svg

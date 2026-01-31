@@ -3,7 +3,7 @@ const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.3 })
 </script>
 
 <template>
-  <section ref="targetElement" class="w-full bg-[#2b1e17] py-6 md:py-8">
+  <section ref="targetElement" class="w-full bg-brown-dark py-6 md:py-8">
     <div class="container mx-auto px-4 md:px-8">
       <div
         class="flex items-center justify-center gap-4 md:gap-8 lg:gap-12 transition-all duration-700 ease-out"
@@ -26,11 +26,11 @@ const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.3 })
         </div>
 
         <!-- Vertical divider -->
-        <div class="h-12 sm:h-14 md:h-16 lg:h-20 w-px bg-[#c4a46e]/30" />
+        <div class="h-12 sm:h-14 md:h-16 lg:h-20 w-px bg-tan/30" />
 
         <!-- Text content -->
-        <div class="flex flex-col justify-center text-[#f7f4ef]">
-          <p class="text-xs sm:text-sm md:text-base text-[#c4a46e] font-medium mb-1">
+        <div class="flex flex-col justify-center text-cream">
+          <p class="text-xs sm:text-sm md:text-base text-tan font-medium mb-1">
             Ve spolupráci s
           </p>
           <p class="text-sm sm:text-base md:text-lg font-semibold leading-tight">
