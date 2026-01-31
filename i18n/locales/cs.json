@@ -1,4 +1,8 @@
 {
+  "seo": {
+    "title": "Hipomonument",
+    "description": "Objevte historické jezdecké památky v České republice. Interaktivní mapa a průvodce po hipomonumentech."
+  },
   "nav": {
     "map": "Mapa",
     "recommended": "Doporučená místa",

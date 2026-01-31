@@ -4,6 +4,35 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
   devtools: { enabled: true },
+
+  app: {
+    head: {
+      htmlAttrs: { lang: 'cs' },
+      title: 'Hipomonument',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Objevte historické jezdecké památky v České republice. Interaktivní mapa a průvodce po hipomonumentech.' },
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Hipomonument' },
+        { property: 'og:title', content: 'Hipomonument' },
+        { property: 'og:description', content: 'Objevte historické jezdecké památky v České republice. Interaktivní mapa a průvodce po hipomonumentech.' },
+        { property: 'og:image', content: '/og-image.png' },
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Hipomonument' },
+        { name: 'twitter:description', content: 'Objevte historické jezdecké památky v České republice.' },
+        { name: 'twitter:image', content: '/og-image.png' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+      ],
+    },
+  },
   modules: [
     '@nuxt/eslint',
     '@nuxt/image',

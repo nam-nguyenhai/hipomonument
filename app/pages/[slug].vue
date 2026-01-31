@@ -15,6 +15,16 @@ const { data: monument } = await useAsyncData<Monument>(
   { watch: [locale] },
 )
 
+// Dynamic SEO based on monument data
+useSeoMeta({
+  title: () => monument.value?.title ? `${monument.value.title} | Hipomonument` : t('seo.title'),
+  ogTitle: () => monument.value?.title || t('seo.title'),
+  description: () => monument.value?.description || t('seo.description'),
+  ogDescription: () => monument.value?.description || t('seo.description'),
+  ogImage: () => monument.value?.carousel?.files?.[0]?.url || '/og-image.png',
+  twitterCard: 'summary_large_image',
+})
+
 // Convert oembed tags to iframes after component mounts
 onMounted(() => {
   const oembeds = document.querySelectorAll('oembed[url]')

@@ -1,4 +1,8 @@
 {
+  "seo": {
+    "title": "Hipomonument",
+    "description": "Discover historical equestrian monuments in the Czech Republic. Interactive map and guide to horse-related heritage sites."
+  },
   "nav": {
     "map": "Map",
     "recommended": "Recommended Places",
