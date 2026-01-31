@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
-import { onUnmounted, ref, watch } from 'vue'
-
 const { t, locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()

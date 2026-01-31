@@ -5,6 +5,10 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
+  features: {
+    inlineStyles: false,
+  },
+
   app: {
     head: {
       htmlAttrs: { lang: 'cs' },
