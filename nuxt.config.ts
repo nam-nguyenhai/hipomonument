@@ -13,6 +13,10 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
   ],
 
+  leaflet: {
+    markerCluster: true,
+  },
+
   i18n: {
     locales: [
       { code: 'cs', name: 'Čeština', language: 'cs-CZ', file: 'cs.json' },

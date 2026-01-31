@@ -6,6 +6,13 @@ const { t, locale, locales } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
 
+// Get switch locale path without hash to avoid hydration mismatch
+function getSwitchLocalePath(code: 'cs' | 'en') {
+  const basePath = switchLocalePath(code)
+  // Remove any hash from the path to ensure consistent SSR/client rendering
+  return basePath.split('#')[0]
+}
+
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 const isMapVisible = ref(false)
@@ -113,7 +120,7 @@ onUnmounted(() => {
           <NuxtLink
             v-for="loc in locales"
             :key="loc.code"
-            :to="switchLocalePath(loc.code)"
+            :to="getSwitchLocalePath(loc.code)"
             class="text-sm font-medium transition-colors duration-200 hover:text-gold"
             :class="locale === loc.code ? 'text-gold' : 'text-gray-400'"
           >
@@ -173,7 +180,7 @@ onUnmounted(() => {
             <NuxtLink
               v-for="loc in locales"
               :key="loc.code"
-              :to="switchLocalePath(loc.code)"
+              :to="getSwitchLocalePath(loc.code)"
               class="text-base font-medium transition-colors duration-200 hover:text-gold"
               :class="locale === loc.code ? 'text-gold' : 'text-gray-400'"
               @click="closeMenu"

@@ -32,7 +32,16 @@ const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.2 })
         class="rounded-[12px] border border-tan shadow-soft overflow-hidden bg-white transition-all duration-700 ease-out delay-200"
         :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
       >
-        <AppMonumentsMap :monuments="monuments" />
+        <ClientOnly>
+          <AppMonumentsMap :monuments="monuments" />
+          <template #fallback>
+            <div class="w-full h-[600px] md:h-[700px] bg-gray-100 flex items-center justify-center">
+              <p class="text-gray-500">
+                {{ t('map.loading') }}
+              </p>
+            </div>
+          </template>
+        </ClientOnly>
       </div>
     </div>
   </section>
