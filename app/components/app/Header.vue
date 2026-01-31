@@ -2,6 +2,10 @@
 import { useMediaQuery } from '@vueuse/core'
 import { onUnmounted, ref, watch } from 'vue'
 
+const { t, locale, locales } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
+const localePath = useLocalePath()
+
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 const isMapVisible = ref(false)
@@ -9,10 +13,10 @@ const isMapVisible = ref(false)
 // Detect mobile/tablet devices (screens smaller than 1024px)
 const isMobileOrTablet = useMediaQuery('(max-width: 1023px)')
 
-const navItems = [
-  { label: 'Mapa', href: '/#map' },
-  { label: 'Doporučená místa', href: '/#recommended-places' },
-]
+const navItems = computed(() => [
+  { label: t('nav.map'), href: `${localePath('index')}#map` },
+  { label: t('nav.recommended'), href: `${localePath('index')}#recommended-places` },
+])
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -88,12 +92,12 @@ onUnmounted(() => {
     }"
   >
     <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-2 md:py-4 px-4">
-      <NuxtLink to="/">
+      <NuxtLink :to="localePath('index')">
         <AppLogo />
       </NuxtLink>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden md:flex gap-8">
+      <nav class="hidden md:flex gap-8 items-center">
         <a
           v-for="item in navItems"
           :key="item.label"
@@ -103,6 +107,19 @@ onUnmounted(() => {
           {{ item.label }}
           <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300 group-hover:w-full" />
         </a>
+
+        <!-- Language Switcher -->
+        <div class="flex gap-2 ml-4 border-l border-gray-600 pl-4">
+          <NuxtLink
+            v-for="loc in locales"
+            :key="loc.code"
+            :to="switchLocalePath(loc.code)"
+            class="text-sm font-medium transition-colors duration-200 hover:text-gold"
+            :class="locale === loc.code ? 'text-gold' : 'text-gray-400'"
+          >
+            {{ loc.code.toUpperCase() }}
+          </NuxtLink>
+        </div>
       </nav>
 
       <!-- Hamburger Button (Mobile) -->
@@ -150,6 +167,20 @@ onUnmounted(() => {
           >
             {{ item.label }}
           </a>
+
+          <!-- Mobile Language Switcher -->
+          <div class="flex gap-4 pt-4 border-t border-gray-700">
+            <NuxtLink
+              v-for="loc in locales"
+              :key="loc.code"
+              :to="switchLocalePath(loc.code)"
+              class="text-base font-medium transition-colors duration-200 hover:text-gold"
+              :class="locale === loc.code ? 'text-gold' : 'text-gray-400'"
+              @click="closeMenu"
+            >
+              {{ loc.name }}
+            </NuxtLink>
+          </div>
         </div>
       </nav>
     </Transition>

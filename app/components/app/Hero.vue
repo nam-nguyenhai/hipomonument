@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
+const { t } = useI18n()
+
 const isLoaded = ref(false)
 
 onMounted(() => {
@@ -25,7 +27,7 @@ onMounted(() => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Interaktivní průvodce historií
+              {{ t('hero.badge') }}
             </span>
           </div>
 
@@ -34,7 +36,7 @@ onMounted(() => {
             :class="isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'"
           >
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-              Po stopách <span class="relative inline-block">koní</span>
+              {{ t('hero.title') }} <span class="relative inline-block">{{ t('hero.titleHighlight') }}</span>
             </h1>
           </div>
 
@@ -50,20 +52,20 @@ onMounted(() => {
             :class="isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'"
           >
             <p class="text-lg md:text-xl leading-relaxed">
-              <span class="font-semibold text-gray-900">Interaktivní webová mapa</span> a průvodce po historických místech, která spojuje jeden motiv - <span class="font-semibold">koně</span>.
+              <span class="font-semibold text-gray-900">{{ t('hero.description1Bold') }}</span> {{ t('hero.description1Rest') }} <span class="font-semibold">{{ t('hero.description1Highlight') }}</span>.
             </p>
             <p class="text-lg md:text-xl leading-relaxed">
-              Objevuj <span class="font-semibold text-gray-900">sochy, památníky, jízdárny, závodiště</span> i zapomenutá místa, kde kůň sehrál důležitou roli v dějinách i kultuře.
+              {{ t('hero.description2Start') }} <span class="font-semibold text-gray-900">{{ t('hero.description2Bold') }}</span> {{ t('hero.description2End') }}
             </p>
           </div>
 
           <div class="flex gap-5 flex-wrap">
             <AppButton href="#map" :is-loaded="isLoaded">
-              Zobrazit mapu
+              {{ t('hero.showMap') }}
             </AppButton>
 
             <AppButton href="#recommended-places" :is-loaded="isLoaded">
-              Zobrazit doporučená místa
+              {{ t('hero.showRecommended') }}
             </AppButton>
           </div>
         </div>
@@ -74,7 +76,7 @@ onMounted(() => {
         >
           <img
             src="/hero.webp"
-            alt="Po stopách koní"
+            :alt="`${t('hero.title')} ${t('hero.titleHighlight')}`"
             class="w-full max-w-[500px] lg:max-w-[600px] h-auto object-contain"
           >
         </div>

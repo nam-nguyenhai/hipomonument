@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { Monument } from '~/types/types'
 
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const { monuments } = defineProps<{
   monuments: Monument[]
 }>()
@@ -166,16 +169,17 @@ async function onMapReady() {
       })
 
       // Popup with detailed information (shown on click)
+      const monumentTypeName = t(`monument.types.${monument.type}`)
       let popupContent = `
         <div class="popup-content">
           <img src="${getStrapiMedia(monument.image?.url || '')}" alt="${monument.title.replace(/"/g, '&quot;')}" class="popup-image" />
           <h3 class="popup-title">${monument.title}</h3>
           <div class="popup-details">
             <p class="popup-text">
-              <strong>Typ:</strong> ${monument.type}
+              <strong>${t('map.popup.type')}:</strong> ${monumentTypeName}
             </p>
             <p class="popup-text">
-              <strong>Adresa:</strong> ${monument.address || ' není k dispozici'}
+              <strong>${t('map.popup.address')}:</strong> ${monument.address || t('map.popup.addressNotAvailable')}
             </p>
       `
 
@@ -197,14 +201,14 @@ async function onMapReady() {
         )
         popupContent += `
             <p class="popup-text popup-distance">
-              <strong>Vzdálenost:</strong> ${formatDistance(distance)}
+              <strong>${t('map.popup.distance')}:</strong> ${formatDistance(distance)}
             </p>
         `
       }
 
       popupContent += `
           </div>
-          ${monument.slug ? `<a href="/${monument.slug}" class="popup-button">Zobrazit detail <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></a>` : ''}
+          ${monument.slug ? `<a href="${localePath('index').replace(/\/$/, '')}/${monument.slug}" class="popup-button">${t('map.popup.viewDetail')} <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></a>` : ''}
         </div>
       `
 
@@ -272,12 +276,12 @@ function getUserLocation() {
       },
       (error) => {
         console.error('Error getting location:', error)
-        locationError.value = 'Nepodařilo se získat polohu'
+        locationError.value = t('map.location.errorGetting')
       },
     )
   }
   else {
-    locationError.value = 'Geolokace není dostupná'
+    locationError.value = t('map.location.notAvailable')
   }
 }
 
@@ -306,23 +310,24 @@ async function updateMarkersWithDistance() {
           Number(monument.longitude),
         )
 
+        const monumentTypeName = t(`monument.types.${monument.type}`)
         const popupContent = `
           <div class="popup-content">
             <img src="${getStrapiMedia(monument.image?.url || '')}" alt="${monument.title.replace(/"/g, '&quot;')}" class="popup-image" />
             <h3 class="popup-title">${monument.title}</h3>
             <div class="popup-details">
               <p class="popup-text">
-                <strong>Typ:</strong> ${monument.type}
+                <strong>${t('map.popup.type')}:</strong> ${monumentTypeName}
               </p>
               <p class="popup-text">
-                <strong>Místo:</strong> ${monument.address || 'Adresa není k dispozici'}
+                <strong>${t('map.popup.address')}:</strong> ${monument.address || t('map.popup.addressNotAvailable')}
               </p>
               ${monument.description ? `<p class="popup-text">${monument.description}</p>` : ''}
               <p class="popup-text popup-distance">
-                <strong>Vzdálenost:</strong> ${formatDistance(distance)}
+                <strong>${t('map.popup.distance')}:</strong> ${formatDistance(distance)}
               </p>
             </div>
-            ${monument.slug ? `<a href="/${monument.slug}" class="popup-button">Zobrazit detail <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></a>` : ''}
+            ${monument.slug ? `<a href="${localePath('index').replace(/\/$/, '')}/${monument.slug}" class="popup-button">${t('map.popup.viewDetail')} <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg></a>` : ''}
           </div>
         `
 
@@ -368,7 +373,7 @@ onMounted(() => {
         >
           <h4 class="font-bold text-sm text-brown-dark flex items-center gap-2">
             <span class="inline-block w-5 h-5 rounded-full bg-gold/30 border border-tan/60" />
-            Filtr typů památek
+            {{ t('map.filterTitle') }}
           </h4>
           <svg
             class="w-5 h-5 transition-transform duration-200"
@@ -396,11 +401,11 @@ onMounted(() => {
             >
               <span class="color-dot" :style="{ backgroundColor: getMarkerColor(type) }" />
               <span class="icon">{{ getIconSymbol(type) }}</span>
-              <span class="label">{{ type }}</span>
+              <span class="label">{{ t(`monument.types.${type}`) }}</span>
             </button>
           </div>
           <div class="px-4 pb-4 pt-2 border-t border-tan/40 text-xs text-brown-dark/70 text-center">
-            {{ filteredMonuments.length }} / {{ validMonuments.length }} památek
+            {{ filteredMonuments.length }} / {{ validMonuments.length }} {{ t('map.monumentsCount') }}
           </div>
         </div>
       </div>
@@ -409,7 +414,7 @@ onMounted(() => {
       <div class="w-full h-[600px] md:h-[700px] bg-gray-200 flex items-center justify-center">
         <div class="text-center">
           <p class="text-xl text-gray-600">
-            Načítání mapy...
+            {{ t('map.loading') }}
           </p>
         </div>
       </div>

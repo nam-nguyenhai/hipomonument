@@ -5,6 +5,7 @@ defineProps<{
   monuments: Monument[]
 }>()
 
+const { t } = useI18n()
 const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.2 })
 </script>
 
@@ -16,10 +17,10 @@ const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.2 })
         :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
       >
         <h2 class="text-3xl md:text-4xl font-bold text-brown-dark">
-          Mapa památek
+          {{ t('map.title') }}
         </h2>
         <p class="text-sm md:text-base text-brown-dark/80 mt-3">
-          Prozkoumejte interaktivní mapu míst spojených s koňmi v Praze.
+          {{ t('map.subtitle') }}
         </p>
         <div class="flex items-center justify-center gap-3 mt-4">
           <div class="h-1 w-12 bg-gold rounded-full" />

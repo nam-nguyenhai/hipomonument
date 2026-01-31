@@ -1,0 +1,53 @@
+{
+  "nav": {
+    "map": "Map",
+    "recommended": "Recommended Places",
+    "backToMap": "Back to map"
+  },
+  "hero": {
+    "badge": "Interactive history guide",
+    "title": "Following the trail of",
+    "titleHighlight": "horses",
+    "description1Bold": "Interactive web map",
+    "description1Rest": "and guide to historical places connected by one theme -",
+    "description1Highlight": "horses",
+    "description2Start": "Discover",
+    "description2Bold": "statues, monuments, riding halls, racetracks",
+    "description2End": "and forgotten places where horses played an important role in history and culture.",
+    "showMap": "Show map",
+    "showRecommended": "Show recommended places"
+  },
+  "recommended": {
+    "title": "Our tips for exploration",
+    "subtitle": "Visit the most interesting horse-related monuments in Prague and its surroundings.",
+    "viewMore": "View more"
+  },
+  "map": {
+    "title": "Monument Map",
+    "subtitle": "Explore the interactive map of horse-related places in Prague.",
+    "filterTitle": "Filter monument types",
+    "monumentsCount": "monuments",
+    "loading": "Loading map...",
+    "popup": {
+      "type": "Type",
+      "address": "Address",
+      "addressNotAvailable": "not available",
+      "distance": "Distance",
+      "viewDetail": "View detail"
+    },
+    "location": {
+      "errorGetting": "Could not get location",
+      "notAvailable": "Geolocation is not available"
+    }
+  },
+  "monument": {
+    "types": {
+      "Socha": "Statue",
+      "Sportoviště": "Sports facility",
+      "Budova": "Building",
+      "Freska": "Fresco",
+      "Reliéf": "Relief",
+      "místo": "Place"
+    }
+  }
+}

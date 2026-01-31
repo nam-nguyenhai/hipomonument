@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { monuments } from '~/data/monuments'
 
+const { t } = useI18n()
 const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.15 })
 
 // Select 6 interesting monuments for the recommended places
@@ -47,14 +48,14 @@ const recommendedPlaces = [
         :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
       >
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-          Naše tipy k objevování
+          {{ t('recommended.title') }}
         </h2>
         <div class="flex items-center justify-center gap-3 mb-6">
           <div class="h-1 w-12 bg-gold rounded-full" />
           <div class="h-1 w-6 bg-gold/50 rounded-full" />
         </div>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Navštivte nejzajímavější památky spojené s koňmi v Praze a okolí.
+          {{ t('recommended.subtitle') }}
         </p>
       </div>
 
@@ -78,7 +79,7 @@ const recommendedPlaces = [
             <!-- Hover Overlay -->
             <div class="absolute inset-0 bg-gradient-to-t from-amber-900/80 via-amber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
               <button class="px-6 py-2 bg-white/95 text-amber-900 font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-white">
-                Zobrazit více
+                {{ t('recommended.viewMore') }}
               </button>
             </div>
           </div>

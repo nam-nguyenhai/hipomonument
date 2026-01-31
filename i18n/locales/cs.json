@@ -1,0 +1,53 @@
+{
+  "nav": {
+    "map": "Mapa",
+    "recommended": "Doporučená místa",
+    "backToMap": "Zpět na mapu"
+  },
+  "hero": {
+    "badge": "Interaktivní průvodce historií",
+    "title": "Po stopách",
+    "titleHighlight": "koní",
+    "description1Bold": "Interaktivní webová mapa",
+    "description1Rest": "a průvodce po historických místech, která spojuje jeden motiv -",
+    "description1Highlight": "koně",
+    "description2Start": "Objevuj",
+    "description2Bold": "sochy, památníky, jízdárny, závodiště",
+    "description2End": "i zapomenutá místa, kde kůň sehrál důležitou roli v dějinách i kultuře.",
+    "showMap": "Zobrazit mapu",
+    "showRecommended": "Zobrazit doporučená místa"
+  },
+  "recommended": {
+    "title": "Naše tipy k objevování",
+    "subtitle": "Navštivte nejzajímavější památky spojené s koňmi v Praze a okolí.",
+    "viewMore": "Zobrazit více"
+  },
+  "map": {
+    "title": "Mapa památek",
+    "subtitle": "Prozkoumejte interaktivní mapu míst spojených s koňmi v Praze.",
+    "filterTitle": "Filtr typů památek",
+    "monumentsCount": "památek",
+    "loading": "Načítání mapy...",
+    "popup": {
+      "type": "Typ",
+      "address": "Adresa",
+      "addressNotAvailable": "není k dispozici",
+      "distance": "Vzdálenost",
+      "viewDetail": "Zobrazit detail"
+    },
+    "location": {
+      "errorGetting": "Nepodařilo se získat polohu",
+      "notAvailable": "Geolokace není dostupná"
+    }
+  },
+  "monument": {
+    "types": {
+      "Socha": "Socha",
+      "Sportoviště": "Sportoviště",
+      "Budova": "Budova",
+      "Freska": "Freska",
+      "Reliéf": "Reliéf",
+      "místo": "Místo"
+    }
+  }
+}

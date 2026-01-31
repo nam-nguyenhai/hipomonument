@@ -10,7 +10,22 @@ export default defineNuxtConfig({
     '@nuxtjs/leaflet',
     '@nuxt/fonts',
     '@vueuse/nuxt',
+    '@nuxtjs/i18n',
   ],
+
+  i18n: {
+    locales: [
+      { code: 'cs', name: 'Čeština', language: 'cs-CZ', file: 'cs.json' },
+      { code: 'en', name: 'English', language: 'en-US', file: 'en.json' },
+    ],
+    defaultLocale: 'cs',
+    strategy: 'prefix_except_default',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+    },
+  },
 
   runtimeConfig: {
     public: {

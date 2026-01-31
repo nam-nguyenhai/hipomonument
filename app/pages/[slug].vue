@@ -2,12 +2,18 @@
 import type { Monument } from '~/types/types'
 
 const slug = useRouteParams('slug')
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 
 const { public: { baseURL } } = useRuntimeConfig()
 
-const { data: monument } = await useAsyncData<Monument>(`monument-${slug.value}`, async () => {
-  return await $fetch<Monument>(`${baseURL}/api/monuments/${slug.value}`)
-})
+const { data: monument } = await useAsyncData<Monument>(
+  `monument-${slug.value}-${locale.value}`,
+  async () => {
+    return await $fetch<Monument>(`${baseURL}/api/monuments/${slug.value}?locale=${locale.value}`)
+  },
+  { watch: [locale] },
+)
 
 // Convert oembed tags to iframes after component mounts
 onMounted(() => {
@@ -50,13 +56,13 @@ onMounted(() => {
       <!-- Back Navigation -->
       <nav class="pt-6 pb-4">
         <NuxtLink
-          to="/#map"
+          :to="`${localePath('index')}#map`"
           class="inline-flex items-center gap-2 text-sm text-tan hover:text-brown-dark transition-colors"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
-          Zpět na mapu
+          {{ t('nav.backToMap') }}
         </NuxtLink>
       </nav>
 
