@@ -63,6 +63,15 @@ onMounted(() => {
       <!-- Content -->
       <article class="prose prose-brand">
         <h1>{{ monument.title }}</h1>
+
+        <!-- Image Carousel -->
+        <AppImageCarousel
+          v-if="monument.carousel?.files && monument.carousel.files.length > 0"
+          :images="monument.carousel.files"
+          :alt="monument.title"
+          class="not-prose my-6"
+        />
+
         <section v-html="monument.content" />
       </article>
     </div>
