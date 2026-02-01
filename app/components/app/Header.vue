@@ -96,10 +96,8 @@ onUnmounted(() => {
     }"
   >
     <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-2 md:py-4 px-4">
-      <NuxtLink :to="localePath('index')" class="flex items-center gap-3">
+      <NuxtLink :to="localePath('index')">
         <AppLogo />
-        <span class="hidden sm:block text-gray-400">|</span>
-        <span class="hidden sm:block text-sm text-gray-300 italic">{{ t('nav.subtitle') }}</span>
       </NuxtLink>
 
       <!-- Desktop Navigation -->
