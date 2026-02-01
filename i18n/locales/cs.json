@@ -53,5 +53,10 @@
       "Reliéf": "Reliéf",
       "místo": "Místo"
     }
+  },
+  "partnership": {
+    "inCooperationWith": "Ve spolupráci s",
+    "universityName": "Českou zemědělskou univerzitou v Praze",
+    "facultyAlt": "Fakulta agrobiologie, potravinových a přírodních zdrojů"
   }
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.3 })
 </script>
 
@@ -14,13 +15,13 @@ const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.3 })
           <!-- Mobile: Cropped logo -->
           <img
             src="/logo-faculty-cropped.png"
-            alt="Fakulta agrobiologie, potravinových a přírodních zdrojů"
+            :alt="t('partnership.facultyAlt')"
             class="h-10 sm:h-12 md:hidden w-auto object-contain"
           >
           <!-- Desktop: Full logo -->
           <img
             src="/logo-faculty.png"
-            alt="Fakulta agrobiologie, potravinových a přírodních zdrojů"
+            :alt="t('partnership.facultyAlt')"
             class="hidden md:block md:h-14 lg:h-16 w-auto object-contain"
           >
         </div>
@@ -31,10 +32,10 @@ const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.3 })
         <!-- Text content -->
         <div class="flex flex-col justify-center text-cream">
           <p class="text-xs sm:text-sm md:text-base text-tan font-medium mb-1">
-            Ve spolupráci s
+            {{ t('partnership.inCooperationWith') }}
           </p>
           <p class="text-sm sm:text-base md:text-lg font-semibold leading-tight">
-            Českou zemědělskou univerzitou v Praze
+            {{ t('partnership.universityName') }}
           </p>
         </div>
       </div>

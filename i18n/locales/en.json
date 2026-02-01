@@ -53,5 +53,10 @@
       "Reliéf": "Relief",
       "místo": "Place"
     }
+  },
+  "partnership": {
+    "inCooperationWith": "In cooperation with",
+    "universityName": "Czech University of Life Sciences Prague",
+    "facultyAlt": "Faculty of Agrobiology, Food and Natural Resources"
   }
 }

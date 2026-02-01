@@ -127,8 +127,6 @@ function getDetailUrl(slug: string | undefined): string {
 // Create popup HTML for a monument
 function createPopupHtml(monument: Monument): string {
   const imageUrl = monument.image?.url ? getStrapiMedia(monument.image.url) : null
-  const monumentTypeName = t(`monument.types.${monument.type}`)
-  const typeLabel = t('map.popup.type')
   const addressLabel = t('map.popup.address')
   const addressNotAvailable = t('map.popup.addressNotAvailable')
   const viewDetailLabel = t('map.popup.viewDetail')
@@ -142,7 +140,6 @@ function createPopupHtml(monument: Monument): string {
   html += `
     <h3 class="popup-title">${monument.title}</h3>
     <div class="popup-details">
-      <p class="popup-text"><strong>${typeLabel}:</strong> ${monumentTypeName}</p>
       <p class="popup-text"><strong>${addressLabel}:</strong> ${monument.address || addressNotAvailable}</p>
   `
 

@@ -1,13 +1,12 @@
 <script setup lang="ts">
-const { t, locale, locales } = useI18n()
-const switchLocalePath = useSwitchLocalePath()
+const { t, locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 
-// Get switch locale path without hash to avoid hydration mismatch
-function getSwitchLocalePath(code: 'cs' | 'en') {
-  const basePath = switchLocalePath(code)
-  // Remove any hash from the path to ensure consistent SSR/client rendering
-  return basePath.split('#')[0]
+// Change locale without page refresh
+async function changeLocale(code: 'cs' | 'en') {
+  if (locale.value !== code) {
+    await setLocale(code)
+  }
 }
 
 const isMenuOpen = ref(false)
@@ -114,15 +113,16 @@ onUnmounted(() => {
 
         <!-- Language Switcher -->
         <div class="flex gap-2 ml-4 border-l border-gray-600 pl-4">
-          <NuxtLink
+          <button
             v-for="loc in locales"
             :key="loc.code"
-            :to="getSwitchLocalePath(loc.code)"
-            class="text-sm font-medium transition-colors duration-200 hover:text-gold"
+            type="button"
+            class="text-sm font-medium transition-colors duration-200 hover:text-gold cursor-pointer"
             :class="locale === loc.code ? 'text-gold' : 'text-gray-400'"
+            @click="changeLocale(loc.code)"
           >
             {{ loc.code.toUpperCase() }}
-          </NuxtLink>
+          </button>
         </div>
       </nav>
 
@@ -174,16 +174,16 @@ onUnmounted(() => {
 
           <!-- Mobile Language Switcher -->
           <div class="flex gap-4 pt-4 border-t border-gray-700">
-            <NuxtLink
+            <button
               v-for="loc in locales"
               :key="loc.code"
-              :to="getSwitchLocalePath(loc.code)"
-              class="text-base font-medium transition-colors duration-200 hover:text-gold"
+              type="button"
+              class="text-base font-medium transition-colors duration-200 hover:text-gold cursor-pointer"
               :class="locale === loc.code ? 'text-gold' : 'text-gray-400'"
-              @click="closeMenu"
+              @click="changeLocale(loc.code); closeMenu()"
             >
               {{ loc.name }}
-            </NuxtLink>
+            </button>
           </div>
         </div>
       </nav>
