@@ -58,5 +58,8 @@
     "inCooperationWith": "In cooperation with",
     "universityName": "Czech University of Life Sciences Prague",
     "facultyAlt": "Faculty of Agrobiology, Food and Natural Resources"
+  },
+  "error": {
+    "monumentNotFound": "Monument not found"
   }
 }

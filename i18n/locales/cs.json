@@ -58,5 +58,8 @@
     "inCooperationWith": "Ve spolupráci s",
     "universityName": "Českou zemědělskou univerzitou v Praze",
     "facultyAlt": "Fakulta agrobiologie, potravinových a přírodních zdrojů"
+  },
+  "error": {
+    "monumentNotFound": "Památka nenalezena"
   }
 }

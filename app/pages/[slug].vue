@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import type { Monument } from '~/types/types'
+import { convertOembedToIframes } from '~/utils/youtube'
 
 const slug = useRouteParams('slug')
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const localePath = useLocalePath()
 
-const { public: { baseURL } } = useRuntimeConfig()
+const { monument, error } = await useMonument(slug)
 
-const { data: monument } = await useAsyncData<Monument>(
-  `monument-${slug.value}-${locale.value}`,
-  async () => {
-    return await $fetch<Monument>(`${baseURL}/api/monuments/${slug.value}?locale=${locale.value}`)
-  },
-  { watch: [locale] },
-)
+if (error.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: t('error.monumentNotFound'),
+    fatal: true,
+  })
+}
 
-// Dynamic SEO based on monument data
 useSeoMeta({
   title: () => monument.value?.title ? `${monument.value.title} | Hipomonument` : t('seo.title'),
   ogTitle: () => monument.value?.title || t('seo.title'),
@@ -25,39 +24,7 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-// Convert oembed tags to iframes after component mounts
-onMounted(() => {
-  const oembeds = document.querySelectorAll('oembed[url]')
-  oembeds.forEach((oembed) => {
-    const url = oembed.getAttribute('url')
-    if (url) {
-      // Extract video ID from various YouTube URL formats
-      let videoId = ''
-      const embedMatch = url.split('youtube.com/embed/')
-      const watchMatch = url.split('v=')
-      const shortMatch = url.split('youtu.be/')
-
-      if (url.includes('youtube.com/embed/') && embedMatch.length > 1 && embedMatch[1]) {
-        videoId = embedMatch[1].split('?')[0] || ''
-      }
-      else if (url.includes('youtube.com/watch?v=') && watchMatch.length > 1 && watchMatch[1]) {
-        videoId = watchMatch[1].split('&')[0] || ''
-      }
-      else if (url.includes('youtu.be/') && shortMatch.length > 1 && shortMatch[1]) {
-        videoId = shortMatch[1].split('?')[0] || ''
-      }
-
-      if (videoId) {
-        const iframe = document.createElement('iframe')
-        iframe.setAttribute('src', `https://www.youtube.com/embed/${videoId}`)
-        iframe.setAttribute('frameborder', '0')
-        iframe.setAttribute('allowfullscreen', 'true')
-        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture')
-        oembed.replaceWith(iframe)
-      }
-    }
-  })
-})
+onMounted(convertOembedToIframes)
 </script>
 
 <template>
