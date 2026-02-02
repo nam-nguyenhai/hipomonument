@@ -165,35 +165,65 @@ function createPopupHtml(monument: Monument): string {
   return html
 }
 
+// Parse coordinate string, removing any whitespace
+function parseCoordinate(value: string | undefined): number {
+  if (!value)
+    return Number.NaN
+  return Number(value.replace(/\s/g, ''))
+}
+
+// Small offset in degrees (~10 meters) for overlapping markers
+const OFFSET_DISTANCE = 0.0001
+
 // Transform monuments to marker format for useLMarkerCluster
 function createMarkersData(monumentsList: Monument[]) {
-  // TODO: Remove deduplication after fix at BE
-  // Deduplicate by coordinates to avoid duplicate markers at same location
-  const seen = new Set<string>()
-  const uniqueMonuments = monumentsList.filter((monument) => {
-    const key = `${monument.latitude},${monument.longitude}`
-    if (seen.has(key)) {
-      console.warn(`Duplicate monument at coordinates ${key}:`, monument.title)
+  // Filter out monuments with invalid coordinates
+  const validMonuments = monumentsList.filter((monument) => {
+    const lat = parseCoordinate(monument.latitude)
+    const lng = parseCoordinate(monument.longitude)
+    if (Number.isNaN(lat) || Number.isNaN(lng)) {
+      console.warn(`Invalid coordinates for monument:`, monument.title, { lat: monument.latitude, lng: monument.longitude })
       return false
     }
-    seen.add(key)
     return true
   })
 
-  return uniqueMonuments.map(monument => ({
-    lat: Number(monument.latitude),
-    lng: Number(monument.longitude),
-    name: monument.title,
-    popup: createPopupHtml(monument),
-    options: {
-      icon: L.divIcon({
-        html: createCustomIconHtml(monument.type),
-        className: 'custom-marker-icon',
-        iconSize: [36, 36],
-        iconAnchor: [18, 18],
-      }),
-    },
-  }))
+  // Track how many monuments are at each coordinate to offset duplicates
+  const coordinateCount = new Map<string, number>()
+
+  return validMonuments.map((monument) => {
+    const baseLat = parseCoordinate(monument.latitude)
+    const baseLng = parseCoordinate(monument.longitude)
+    const key = `${baseLat},${baseLng}`
+
+    // Get current count for this coordinate and increment
+    const count = coordinateCount.get(key) || 0
+    coordinateCount.set(key, count + 1)
+
+    // Apply offset for duplicates (spread in a circle pattern)
+    let lat = baseLat
+    let lng = baseLng
+    if (count > 0) {
+      const angle = (count * 2 * Math.PI) / 8 // Spread up to 8 points in a circle
+      lat = baseLat + OFFSET_DISTANCE * Math.cos(angle)
+      lng = baseLng + OFFSET_DISTANCE * Math.sin(angle)
+    }
+
+    return {
+      lat,
+      lng,
+      name: monument.title,
+      popup: createPopupHtml(monument),
+      options: {
+        icon: L.divIcon({
+          html: createCustomIconHtml(monument.type),
+          className: 'custom-marker-icon',
+          iconSize: [36, 36],
+          iconAnchor: [18, 18],
+        }),
+      },
+    }
+  })
 }
 
 // Create or update marker cluster

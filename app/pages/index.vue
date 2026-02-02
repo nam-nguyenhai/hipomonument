@@ -18,7 +18,7 @@ const { data: monuments } = await useAsyncData<Monument[]>(
   `monuments-${locale.value}`,
   async () => {
     const response = await $fetch<FindMany<Monument>>(
-      `${baseURL}/api/monuments?populate=*&locale=${locale.value}`,
+      `${baseURL}/api/monuments?populate=*&locale=${locale.value}&pagination[pageSize]=1000`,
     )
     return response.data
   },
