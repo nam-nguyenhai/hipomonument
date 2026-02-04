@@ -352,20 +352,25 @@ watch(selectedTypes, () => {
   transform: scale(1.1);
 }
 
-/* Cluster styling */
+/* Cluster styling - solid fill, no halo, so dense areas don't overlap inconsistently */
 .marker-cluster-small,
 .marker-cluster-medium,
 .marker-cluster-large {
-  background-color: rgba(212, 175, 55, 0.6) !important;
+  background-color: rgb(212, 175, 55) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
 }
 
 .marker-cluster-small div,
 .marker-cluster-medium div,
 .marker-cluster-large div {
-  background-color: rgba(212, 175, 55, 0.9) !important;
+  background-color: rgb(212, 175, 55) !important;
   color: #1a1a1a !important;
   font-weight: 700 !important;
   font-family: poppins, sans-serif !important;
+  margin: 0 !important;
 }
 
 /* Filter chip styles */
@@ -471,12 +476,16 @@ watch(selectedTypes, () => {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* MarkerCluster styles (inlined to avoid SSR issues) */
+/* MarkerCluster styles (inlined to avoid SSR issues) - solid, no halo */
 .marker-cluster-small,
 .marker-cluster-medium,
 .marker-cluster-large {
-  background-color: rgba(212, 175, 55, 0.6);
+  background-color: rgb(212, 175, 55);
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .marker-cluster-small div,
@@ -484,16 +493,16 @@ watch(selectedTypes, () => {
 .marker-cluster-large div {
   width: 30px;
   height: 30px;
-  margin-left: 5px;
-  margin-top: 5px;
+  margin: 0;
   text-align: center;
   border-radius: 50%;
   font-size: 12px;
-  background-color: rgba(212, 175, 55, 0.9);
+  background-color: rgb(212, 175, 55);
   color: #1a1a1a;
   font-weight: 700;
   font-family: poppins, sans-serif;
   line-height: 30px;
+  flex-shrink: 0;
 }
 
 .marker-cluster {
@@ -513,8 +522,7 @@ watch(selectedTypes, () => {
 .marker-cluster-medium div {
   width: 40px;
   height: 40px;
-  margin-left: 5px;
-  margin-top: 5px;
+  margin: 0;
   line-height: 40px;
 }
 
@@ -526,8 +534,7 @@ watch(selectedTypes, () => {
 .marker-cluster-large div {
   width: 50px;
   height: 50px;
-  margin-left: 5px;
-  margin-top: 5px;
+  margin: 0;
   line-height: 50px;
   font-size: 14px;
 }
