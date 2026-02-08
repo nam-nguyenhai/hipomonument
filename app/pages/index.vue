@@ -24,6 +24,21 @@ const { data: monuments } = await useAsyncData<Monument[]>(
   },
   { watch: [locale] },
 )
+
+// Shared state for selected monument (to zoom to on map)
+const selectedMonument = ref<Monument | null>(null)
+
+// Handle monument selection from recommended places
+function handleMonumentSelect(monument: Monument) {
+  selectedMonument.value = monument
+  // Scroll to map section
+  nextTick(() => {
+    const mapElement = document.getElementById('map')
+    if (mapElement) {
+      mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  })
+}
 </script>
 
 <template>
@@ -31,7 +46,7 @@ const { data: monuments } = await useAsyncData<Monument[]>(
 
   <AppPartnership />
 
-  <AppMapSection id="map" :monuments="monuments || []" />
+  <AppMapSection id="map" :monuments="monuments || []" :selected-monument="selectedMonument" />
 
-  <AppRecommendedPlaces id="recommended-places" />
+  <AppRecommendedPlaces id="recommended-places" @select-monument="handleMonumentSelect" />
 </template>

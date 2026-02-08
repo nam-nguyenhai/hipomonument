@@ -3,8 +3,9 @@ import type { Monument } from '~/types/types'
 import L from 'leaflet'
 import 'leaflet.markercluster'
 
-const { monuments } = defineProps<{
+const { monuments, selectedMonument } = defineProps<{
   monuments: Monument[]
+  selectedMonument?: Monument | null
 }>()
 
 const { t } = useI18n()
@@ -16,6 +17,9 @@ const mapReady = ref(false)
 
 // Store the current marker cluster group for cleanup
 let currentClusterGroup: any = null
+
+// Store markers by monument documentId for quick lookup
+const markersMap = new Map<string | number, any>()
 
 // Filter out monuments without coordinates
 const validMonuments = computed(() =>
@@ -209,11 +213,14 @@ function createMarkersData(monumentsList: Monument[]) {
       lng = baseLng + OFFSET_DISTANCE * Math.sin(angle)
     }
 
+    const monumentId = monument.documentId || monument.id
+
     return {
       lat,
       lng,
       name: monument.title,
       popup: createPopupHtml(monument),
+      monumentId, // Store monument ID for lookup
       options: {
         icon: L.divIcon({
           html: createCustomIconHtml(monument.type),
@@ -239,6 +246,9 @@ async function updateCluster() {
     currentClusterGroup = null
   }
 
+  // Clear markers map
+  markersMap.clear()
+
   // Create new cluster with filtered monuments
   const markersData = createMarkersData(filteredMonuments.value)
 
@@ -253,6 +263,23 @@ async function updateCluster() {
   })
 
   currentClusterGroup = result.markerCluster
+
+  // Store marker references for quick lookup
+  if (result.markers && result.markers.length > 0) {
+    // Match markers with their monument data by index and store them
+    result.markers.forEach((marker: any, index: number) => {
+      const markerData = markersData[index]
+      if (markerData && markerData.monumentId) {
+        // Store the monumentId on the marker itself for later reference
+        marker._monumentId = markerData.monumentId
+        // Store in our map for quick lookup
+        markersMap.set(markerData.monumentId, marker)
+      }
+    })
+  }
+  else {
+    console.warn('No markers returned from useLMarkerCluster')
+  }
 }
 
 // When the map is ready
@@ -264,6 +291,61 @@ async function onMapReady() {
 // Watch for filter changes and update clusters
 watch(selectedTypes, () => {
   updateCluster()
+}, { deep: true })
+
+// Watch for selected monument and zoom to it
+watch(() => selectedMonument, async (monument) => {
+  if (!monument || !mapReady.value || !mapRef.value?.leafletObject)
+    return
+
+  const leafletMap = mapRef.value.leafletObject
+  const lat = parseCoordinate(monument.latitude)
+  const lng = parseCoordinate(monument.longitude)
+
+  if (Number.isNaN(lat) || Number.isNaN(lng))
+    return
+
+  const markerId = monument.documentId || monument.id
+  if (!markerId)
+    return
+
+  // Ensure the monument type is selected in filters
+  const needsFilterUpdate = !selectedTypes.value.has(monument.type)
+  if (needsFilterUpdate) {
+    selectedTypes.value.add(monument.type)
+    selectedTypes.value = new Set(selectedTypes.value)
+    // If filter was just enabled, update cluster first
+    await nextTick()
+    await updateCluster()
+  }
+
+  // Close any currently open popups first
+  leafletMap.closePopup()
+
+  // Use the cluster's zoomToShowLayer which handles both zoom and rendering
+  await nextTick()
+
+  if (!markersMap.has(markerId)) {
+    console.warn('Marker not found after filter update')
+    return
+  }
+
+  const marker = markersMap.get(markerId)
+
+  if (currentClusterGroup && marker) {
+    // Use zoomToShowLayer which properly handles zoom, unclustering, and rendering
+    currentClusterGroup.zoomToShowLayer(marker, () => {
+      // Center the marker in the viewport
+      leafletMap.panTo([lat, lng], {
+        animate: true,
+        duration: 0.5,
+      })
+      // Wait a bit for rendering and panning to complete
+      setTimeout(() => {
+        marker.openPopup()
+      }, 300)
+    })
+  }
 }, { deep: true })
 </script>
 

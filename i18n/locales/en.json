@@ -24,7 +24,8 @@
   "recommended": {
     "title": "Our tips for exploration",
     "subtitle": "Visit the most interesting horse-related monuments in Prague and its surroundings.",
-    "viewMore": "View more",
+    "readMore": "Learn more",
+    "showOnMap": "Show on map",
     "loading": "Loading recommended places...",
     "error": "Loading Error",
     "errorMessage": "Failed to load recommended places. Please try again later.",

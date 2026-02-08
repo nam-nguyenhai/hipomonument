@@ -3,6 +3,7 @@ import type { Monument } from '~/types/types'
 
 defineProps<{
   monuments: Monument[]
+  selectedMonument?: Monument | null
 }>()
 
 const { t } = useI18n()
@@ -26,7 +27,7 @@ const { t } = useI18n()
 
       <div class="rounded-[12px] border border-tan shadow-soft overflow-hidden bg-white">
         <ClientOnly>
-          <AppMonumentsMap :monuments="monuments" />
+          <AppMonumentsMap :monuments="monuments" :selected-monument="selectedMonument" />
           <template #fallback>
             <div class="w-full h-[600px] md:h-[700px] bg-gray-100 flex items-center justify-center">
               <p class="text-gray-500">

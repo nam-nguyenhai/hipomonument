@@ -24,7 +24,8 @@
   "recommended": {
     "title": "Naše tipy k objevování",
     "subtitle": "Navštivte nejzajímavější památky spojené s koňmi v Praze a okolí.",
-    "viewMore": "Zobrazit více",
+    "readMore": "Dozvědět se více",
+    "showOnMap": "Zobrazit na mapě",
     "loading": "Načítání doporučených míst...",
     "error": "Chyba načítání",
     "errorMessage": "Nepodařilo se načíst doporučená místa. Zkuste to prosím později.",

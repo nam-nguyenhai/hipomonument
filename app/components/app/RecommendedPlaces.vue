@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import type { Monument } from '~/types/types'
+
+const emit = defineEmits<{
+  selectMonument: [monument: Monument]
+}>()
+
 const { t } = useI18n()
 const { public: { baseURL } } = useRuntimeConfig()
 
@@ -10,6 +16,11 @@ function getImageUrl(imageUrl?: string) {
   if (!imageUrl)
     return '/hero.webp' // fallback
   return imageUrl.startsWith('http') ? imageUrl : `${baseURL}${imageUrl}`
+}
+
+// Handle show on map button click
+function handleShowOnMap(monument: Monument) {
+  emit('selectMonument', monument)
 }
 </script>
 
@@ -75,7 +86,7 @@ function getImageUrl(imageUrl?: string) {
         <article
           v-for="monument in monuments"
           :key="monument.documentId || monument.id"
-          class="monument-card group relative overflow-hidden rounded-lg border-2 border-tan-light bg-cream shadow-md transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+          class="monument-card group flex flex-col overflow-hidden rounded-lg border-2 border-tan-light bg-cream shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
         >
           <!-- Image Container -->
           <div class="relative overflow-hidden aspect-[4/3]">
@@ -85,26 +96,36 @@ function getImageUrl(imageUrl?: string) {
               class="w-full h-full object-cover sepia transition-all duration-500 group-hover:scale-110"
               loading="lazy"
             />
-
-            <!-- Hover Overlay -->
-            <NuxtLink
-              :to="monument.slug ? `/${monument.slug}` : '#'"
-              class="absolute inset-0 bg-gradient-to-t from-amber-900/80 via-amber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6"
-            >
-              <span class="px-6 py-2 bg-white/95 text-amber-900 font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-white">
-                {{ t('recommended.viewMore') }}
-              </span>
-            </NuxtLink>
           </div>
 
           <!-- Text Content -->
-          <div class="p-5">
+          <div class="flex-1 p-5 flex flex-col">
             <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
               {{ monument.title }}
             </h3>
-            <p v-if="monument.description" class="text-gray-600 text-sm leading-relaxed line-clamp-2">
-              {{ monument.description }}
-            </p>
+            <div v-if="monument.description" class="mb-4 flex-1">
+              <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
+                {{ monument.description }}
+              </p>
+              <NuxtLink
+                v-if="monument.slug"
+                :to="`/${monument.slug}`"
+                class="text-gold hover:text-gold-dark text-sm font-semibold hover:underline transition-colors duration-200 inline-block mt-1"
+              >
+                {{ t('recommended.readMore') }}
+              </NuxtLink>
+            </div>
+
+            <!-- Action Button -->
+            <button
+              class="w-full px-4 py-2.5 bg-gold text-amber-900 font-semibold rounded-lg shadow-md transition-all duration-200 hover:bg-gold-dark hover:shadow-lg flex items-center justify-center gap-2 mt-auto"
+              @click="handleShowOnMap(monument)"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              <span>{{ t('recommended.showOnMap') }}</span>
+            </button>
           </div>
         </article>
       </div>
