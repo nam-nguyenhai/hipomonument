@@ -107,25 +107,34 @@ function handleShowOnMap(monument: Monument) {
               <p class="text-gray-600 text-sm leading-relaxed line-clamp-3">
                 {{ monument.description }}
               </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-3 mt-auto">
               <NuxtLink
                 v-if="monument.slug"
                 :to="`/${monument.slug}`"
-                class="text-gold hover:text-gold-dark text-sm font-semibold hover:underline transition-colors duration-200 inline-block mt-1"
+                class="flex-1 flex"
               >
-                {{ t('recommended.readMore') }}
+                <AppButton
+                  variant="primary"
+                  size="sm"
+                  :show-arrow="false"
+                  class="w-full h-full"
+                >
+                  {{ t('recommended.readMore') }}
+                </AppButton>
               </NuxtLink>
+              <AppButton
+                variant="secondary"
+                size="sm"
+                :show-arrow="false"
+                class="flex-1 h-full"
+                @click="handleShowOnMap(monument)"
+              >
+                {{ t('recommended.showOnMap') }}
+              </AppButton>
             </div>
-
-            <!-- Action Button -->
-            <button
-              class="w-full px-4 py-2.5 bg-gold text-gray-900 font-semibold rounded-lg shadow-md transition-all duration-200 hover:bg-gold-dark hover:shadow-lg flex items-center justify-center gap-2 mt-auto"
-              @click="handleShowOnMap(monument)"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-              <span>{{ t('recommended.showOnMap') }}</span>
-            </button>
           </div>
         </article>
       </div>
