@@ -5,8 +5,8 @@ const { t } = useI18n()
 <template>
   <section class="relative w-full bg-cream overflow-hidden">
     <div class="container mx-auto px-8">
-      <div class="flex flex-col lg:flex-row items-center md:min-h-[700px] gap-12 lg:gap-16 py-16 lg:py-0">
-        <div class="flex-1 space-y-6 lg:space-y-8">
+      <div class="flex flex-col xl:flex-row items-center md:min-h-[700px] gap-12 xl:gap-16 py-16 xl:py-0">
+        <div class="flex-1 space-y-6 xl:space-y-8">
           <div class="inline-block">
             <span class="inline-flex items-center gap-2 bg-gold/10 text-brown-dark px-4 py-2 rounded-full text-sm font-semibold border border-brown-dark/20">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,7 +18,7 @@ const { t } = useI18n()
           </div>
 
           <div class="relative">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+            <h1 class="text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
               {{ t('hero.title') }} <span class="relative inline-block">{{ t('hero.titleHighlight') }}</span>
             </h1>
           </div>
@@ -47,11 +47,11 @@ const { t } = useI18n()
           </div>
         </div>
 
-        <div class="hidden lg:flex flex-1 items-center justify-center lg:justify-end">
+        <div class="hidden xl:flex flex-1 items-center justify-center xl:justify-end">
           <img
             src="/hero.webp"
             :alt="`${t('hero.title')} ${t('hero.titleHighlight')}`"
-            class="w-full max-w-[500px] lg:max-w-[600px] h-auto object-contain"
+            class="w-full max-w-[500px] xl:max-w-[600px] h-auto object-contain"
           >
         </div>
       </div>
