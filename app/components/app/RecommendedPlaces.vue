@@ -1,46 +1,21 @@
 <script setup lang="ts">
-import { monuments } from '~/data/monuments'
-
 const { t } = useI18n()
-const { isVisible, targetElement } = useScrollAnimation({ threshold: 0.15 })
+const { isVisible } = useScrollAnimation({ threshold: 0.15 })
+const { public: { baseURL } } = useRuntimeConfig()
 
-// Select 6 interesting monuments for the recommended places
-const recommendedPlaces = [
-  {
-    ...monuments.find(m => m.id === 1)!, // Pomník sv. Václava
-    description: 'Ikonická jezdecká socha patrona Čech od Josefa Václava Myslbeka na Václavském náměstí.',
-    image: '/hero.webp', // placeholder
-  },
-  {
-    ...monuments.find(m => m.id === 2)!, // Jan Žižka
-    description: 'Největší jezdecká socha na světě zobrazující husitského vojevůdce.',
-    image: '/hero.webp', // placeholder
-  },
-  {
-    ...monuments.find(m => m.id === 3)!, // Trigy na ND
-    description: 'Dramatické sousoší trig symbolizující sílu českého umění a kultury.',
-    image: '/hero.webp', // placeholder
-  },
-  {
-    ...monuments.find(m => m.id === 8)!, // Trojský zámek
-    description: 'Barokní konírna s unikátními freskami a historickou atmosférou.',
-    image: '/hero.webp', // placeholder
-  },
-  {
-    ...monuments.find(m => m.id === 7)!, // Jízdárna Pražského hradu
-    description: 'Historická císařská jízdárna, dnes prostor pro výstavy a kulturní akce.',
-    image: '/hero.webp', // placeholder
-  },
-  {
-    ...monuments.find(m => m.id === 29)!, // Sv. Jiří
-    description: 'Kopie gotické sochy sv. Jiří bojujícího s drakem na třetím nádvoří hradu.',
-    image: '/hero.webp', // placeholder
-  },
-]
+// Fetch recommended monuments from API
+const { monuments, error, isLoading, isEmpty } = useRecommendedMonuments()
+
+// Helper to get full image URL from Strapi
+function getImageUrl(imageUrl?: string) {
+  if (!imageUrl)
+    return '/hero.webp' // fallback
+  return imageUrl.startsWith('http') ? imageUrl : `${baseURL}${imageUrl}`
+}
 </script>
 
 <template>
-  <section ref="targetElement" class="py-16 bg-gradient-to-b from-white to-gray-50">
+  <section class="py-16 bg-gradient-to-b from-white to-gray-50">
     <div class="container mx-auto px-4 md:px-8">
       <!-- Heading -->
       <div
@@ -59,38 +34,82 @@ const recommendedPlaces = [
         </p>
       </div>
 
+      <!-- Loading State -->
+      <div v-if="isLoading" class="flex justify-center items-center py-20">
+        <div class="flex flex-col items-center gap-4">
+          <div class="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin" />
+          <p class="text-gray-600">
+            {{ t('recommended.loading') }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-20">
+        <div class="max-w-md mx-auto">
+          <div class="text-6xl mb-4">
+            ⚠️
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">
+            {{ t('recommended.error') }}
+          </h3>
+          <p class="text-gray-600 mb-6">
+            {{ t('recommended.errorMessage') }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else-if="isEmpty" class="text-center py-20">
+        <div class="max-w-md mx-auto">
+          <div class="text-6xl mb-4">
+            🏛️
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">
+            {{ t('recommended.empty') }}
+          </h3>
+          <p class="text-gray-600">
+            {{ t('recommended.emptyMessage') }}
+          </p>
+        </div>
+      </div>
+
       <!-- Grid of Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         <article
-          v-for="(place, index) in recommendedPlaces"
-          :key="place.id"
+          v-for="(monument, index) in monuments"
+          :key="monument.documentId || monument.id"
           class="monument-card group relative overflow-hidden rounded-lg border-2 border-tan-light bg-cream shadow-md transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
           :style="{ transitionDelay: isVisible ? `${index * 100 + 200}ms` : '0ms' }"
         >
           <!-- Image Container -->
           <div class="relative overflow-hidden aspect-[4/3]">
-            <img
-              :src="place.image"
-              :alt="place.name"
+            <NuxtImg
+              :src="getImageUrl(monument.image?.url)"
+              :alt="monument.image?.alternativeText || monument.title"
               class="w-full h-full object-cover sepia transition-all duration-500 group-hover:scale-110"
-            >
+              loading="lazy"
+            />
 
             <!-- Hover Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-amber-900/80 via-amber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-              <button class="px-6 py-2 bg-white/95 text-amber-900 font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-white">
+            <NuxtLink
+              :to="monument.slug ? `/${monument.slug}` : '#'"
+              class="absolute inset-0 bg-gradient-to-t from-amber-900/80 via-amber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6"
+            >
+              <span class="px-6 py-2 bg-white/95 text-amber-900 font-semibold rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-white">
                 {{ t('recommended.viewMore') }}
-              </button>
-            </div>
+              </span>
+            </NuxtLink>
           </div>
 
           <!-- Text Content -->
           <div class="p-5">
             <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
-              {{ place.shortName || place.name }}
+              {{ monument.title }}
             </h3>
-            <p class="text-gray-600 text-sm leading-relaxed line-clamp-2">
-              {{ place.description }}
+            <p v-if="monument.description" class="text-gray-600 text-sm leading-relaxed line-clamp-2">
+              {{ monument.description }}
             </p>
           </div>
         </article>
