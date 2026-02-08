@@ -16,7 +16,7 @@ export function useRecommendedMonuments() {
   const { public: { baseURL } } = useRuntimeConfig()
 
   const { data: monuments, error, status, refresh } = useAsyncData<Monument[]>(
-    'recommended-monuments',
+    () => `recommended-monuments-${locale.value}`,
     async () => {
       try {
         const response = await $fetch<RecommendedMonumentsResponse>(
@@ -37,8 +37,6 @@ export function useRecommendedMonuments() {
     },
     {
       watch: [locale],
-      // Cache the results for better performance
-      getCachedData: key => useNuxtData(key).data.value,
     },
   )
 

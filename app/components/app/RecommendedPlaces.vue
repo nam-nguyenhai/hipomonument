@@ -118,7 +118,7 @@ function handleShowOnMap(monument: Monument) {
 
             <!-- Action Button -->
             <button
-              class="w-full px-4 py-2.5 bg-gold text-amber-900 font-semibold rounded-lg shadow-md transition-all duration-200 hover:bg-gold-dark hover:shadow-lg flex items-center justify-center gap-2 mt-auto"
+              class="w-full px-4 py-2.5 bg-gold text-gray-900 font-semibold rounded-lg shadow-md transition-all duration-200 hover:bg-gold-dark hover:shadow-lg flex items-center justify-center gap-2 mt-auto"
               @click="handleShowOnMap(monument)"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

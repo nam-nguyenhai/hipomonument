@@ -43,7 +43,7 @@
       "address": "Address",
       "addressNotAvailable": "not available",
       "distance": "Distance",
-      "viewDetail": "View detail"
+      "viewDetail": "Learn more"
     },
     "location": {
       "errorGetting": "Could not get location",

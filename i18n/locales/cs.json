@@ -43,7 +43,7 @@
       "address": "Adresa",
       "addressNotAvailable": "není k dispozici",
       "distance": "Vzdálenost",
-      "viewDetail": "Zobrazit detail"
+      "viewDetail": "Dozvědět se více"
     },
     "location": {
       "errorGetting": "Nepodařilo se získat polohu",
