@@ -1,21 +1,16 @@
 <script setup lang="ts">
 interface Props {
   href: string
-  isLoaded?: boolean
   showArrow?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
-  isLoaded: true,
   showArrow: true,
 })
 </script>
 
 <template>
-  <div
-    class="pt-2 transition-all duration-700 ease-out delay-[400ms]"
-    :class="isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'"
-  >
+  <div class="pt-2">
     <a
       :href="href"
       class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"

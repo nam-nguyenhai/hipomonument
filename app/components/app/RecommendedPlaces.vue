@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { t } = useI18n()
-const { isVisible } = useScrollAnimation({ threshold: 0.15 })
 const { public: { baseURL } } = useRuntimeConfig()
 
 // Fetch recommended monuments from API
@@ -18,10 +17,7 @@ function getImageUrl(imageUrl?: string) {
   <section class="py-16 bg-gradient-to-b from-white to-gray-50">
     <div class="container mx-auto px-4 md:px-8">
       <!-- Heading -->
-      <div
-        class="mb-12 text-center transition-all duration-700 ease-out"
-        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
-      >
+      <div class="mb-12 text-center">
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
           {{ t('recommended.title') }}
         </h2>
@@ -77,11 +73,9 @@ function getImageUrl(imageUrl?: string) {
       <!-- Grid of Cards -->
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         <article
-          v-for="(monument, index) in monuments"
+          v-for="monument in monuments"
           :key="monument.documentId || monument.id"
           class="monument-card group relative overflow-hidden rounded-lg border-2 border-tan-light bg-cream shadow-md transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
-          :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
-          :style="{ transitionDelay: isVisible ? `${index * 100 + 200}ms` : '0ms' }"
         >
           <!-- Image Container -->
           <div class="relative overflow-hidden aspect-[4/3]">
