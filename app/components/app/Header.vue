@@ -11,10 +11,6 @@ async function changeLocale(code: 'cs' | 'en') {
 
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
-const isMapVisible = ref(false)
-
-// Detect mobile/tablet devices (screens smaller than 1024px)
-const isMobileOrTablet = useMediaQuery('(max-width: 1023px)')
 
 const navItems = computed(() => [
   { label: t('nav.map'), href: `${localePath('index')}#map` },
@@ -33,66 +29,19 @@ function handleScroll() {
   isScrolled.value = window.scrollY > 20
 }
 
-let mapObserver: IntersectionObserver | null = null
-
-// Setup scroll listener and map observer
-function setupMobileListeners() {
+onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-
-  // Observe the map section to hide header when it's visible
-  const mapSection = document.querySelector('.map-section')
-  if (mapSection) {
-    mapObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isMapVisible.value = entry.isIntersecting && entry.intersectionRatio > 0.3
-        })
-      },
-      {
-        threshold: [0, 0.3, 0.5, 1],
-        rootMargin: '-80px 0px 0px 0px', // Account for header height
-      },
-    )
-    mapObserver.observe(mapSection)
-  }
-}
-
-// Cleanup scroll listener and map observer
-function cleanupMobileListeners() {
-  window.removeEventListener('scroll', handleScroll)
-  if (mapObserver) {
-    mapObserver.disconnect()
-    mapObserver = null
-  }
-  // Reset visibility state when switching to desktop
-  isMapVisible.value = false
-  isScrolled.value = false
-}
-
-// Watch for changes in screen size and dynamically add/remove listeners
-watch(isMobileOrTablet, (isMobile) => {
-  if (import.meta.client) {
-    if (isMobile) {
-      setupMobileListeners()
-    }
-    else {
-      cleanupMobileListeners()
-    }
-  }
-}, { immediate: true })
+})
 
 onUnmounted(() => {
-  cleanupMobileListeners()
+  window.removeEventListener('scroll', handleScroll)
 })
 </script>
 
 <template>
   <header
     class="w-full sticky top-0 z-50 transition-all duration-500 bg-black"
-    :class="{
-      'shadow-lg': isScrolled,
-      'md:translate-y-0 md:opacity-100 md:pointer-events-auto -translate-y-full opacity-0 pointer-events-none': isMapVisible && isMobileOrTablet,
-    }"
+    :class="{ 'shadow-lg': isScrolled }"
   >
     <div class="mx-auto container text-white flex gap-8 justify-between items-center w-full py-2 md:py-4 px-4">
       <NuxtLink :to="localePath('index')">

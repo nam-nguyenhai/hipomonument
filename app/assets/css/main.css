@@ -158,8 +158,8 @@
 
   @media (min-width: 768px) {
     html {
-      /* Desktop: header is larger with py-4 */
-      scroll-padding-top: 5rem; /* 80px */
+      /* Desktop: header is 101px */
+      scroll-padding-top: 101px;
     }
   }
 
