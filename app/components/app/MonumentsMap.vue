@@ -148,7 +148,7 @@ function createPopupHtml(monument: Monument): string {
   `
 
   if (monument.description && !monument.description.includes('<')) {
-    html += `<p class="popup-text">${monument.description}</p>`
+    html += `<p class="popup-text popup-description">${monument.description}</p>`
   }
 
   html += `</div>`
@@ -535,6 +535,14 @@ watch(() => selectedMonument, async (monument) => {
   font-size: 13px;
   color: #4b5563;
   margin: 4px 0 !important;
+}
+
+.popup-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .popup-button {
