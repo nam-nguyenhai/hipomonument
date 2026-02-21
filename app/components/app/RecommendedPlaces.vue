@@ -6,6 +6,7 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const { public: { baseURL } } = useRuntimeConfig()
 
 // Fetch recommended monuments from API
@@ -113,7 +114,7 @@ function handleShowOnMap(monument: Monument) {
             <div class="flex flex-col gap-3 mt-auto">
               <NuxtLink
                 v-if="monument.slug"
-                :to="`/${monument.slug}`"
+                :to="localePath(`/${monument.slug}`)"
                 class="flex-1 flex"
               >
                 <AppButton
