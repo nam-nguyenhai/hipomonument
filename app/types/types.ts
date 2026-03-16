@@ -3,6 +3,15 @@ export interface SharedMedia {
   file?: Media | null
 };
 
+export interface SharedOpenGraph {
+  id?: number
+  ogTitle: string
+  ogDescription: string
+  ogImage?: Media | null
+  ogUrl?: string
+  ogType?: string
+};
+
 export interface SharedQuote {
   id?: number
   title?: string
@@ -18,36 +27,18 @@ export interface SharedSeo {
   id?: number
   metaTitle: string
   metaDescription: string
-  shareImage?: Media | null
+  metaImage?: Media | null
+  openGraph?: SharedOpenGraph | null
+  keywords?: string
+  metaRobots?: string
+  metaViewport?: string
+  canonicalURL?: string
+  structuredData?: Record<string, any>
 };
 
 export interface SharedSlider {
   id?: number
   files?: Media[] | null
-};
-
-export interface About {
-  id?: number
-  documentId?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  publishedAt?: Date | string
-  locale?: string | null
-  title?: string
-  blocks?: any
-};
-
-export interface Global {
-  id?: number
-  documentId?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  publishedAt?: Date | string
-  locale?: string | null
-  siteName: string
-  favicon?: Media | null
-  siteDescription: string
-  defaultSeo?: SharedSeo | null
 };
 
 export interface Monument {
@@ -72,6 +63,17 @@ export interface Monument {
   image?: Media | null
   carousel?: SharedSlider | null
   content?: any
+  seo?: SharedSeo | null
+};
+
+export interface RecommendedMonument {
+  id?: number
+  documentId?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  publishedAt?: Date | string
+  locale?: string | null
+  monuments?: Monument[] | null
 };
 
 export interface Media {

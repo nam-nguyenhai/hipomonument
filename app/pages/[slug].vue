@@ -15,13 +15,29 @@ if (error.value) {
   })
 }
 
+const seo = computed(() => monument.value?.seo)
+const og = computed(() => seo.value?.openGraph)
+
 useSeoMeta({
-  title: () => monument.value?.title ? `${monument.value.title} | Hipomonument` : t('seo.title'),
-  ogTitle: () => monument.value?.title || t('seo.title'),
-  description: () => monument.value?.description || t('seo.description'),
-  ogDescription: () => monument.value?.description || t('seo.description'),
-  ogImage: () => monument.value?.carousel?.files?.[0]?.url || '/og-image.png',
+  title: () => seo.value?.metaTitle || (monument.value?.title ? `${monument.value.title} | Hipomonument` : t('seo.title')),
+  description: () => seo.value?.metaDescription || monument.value?.description || t('seo.description'),
+  keywords: () => seo.value?.keywords,
+  robots: () => seo.value?.metaRobots,
+  ogTitle: () => og.value?.ogTitle || seo.value?.metaTitle || monument.value?.title || t('seo.title'),
+  ogDescription: () => og.value?.ogDescription || seo.value?.metaDescription || monument.value?.description || t('seo.description'),
+  ogImage: () => seo.value?.metaImage?.url || monument.value?.carousel?.files?.[0]?.url || '/og-image.png',
+  ogType: () => og.value?.ogType as 'article' | 'website' || 'website',
   twitterCard: 'summary_large_image',
+})
+
+useHead({
+  script: computed(() => {
+    if (!seo.value?.structuredData) return []
+    return [{
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(seo.value.structuredData),
+    }]
+  }),
 })
 
 onMounted(convertOembedToIframes)

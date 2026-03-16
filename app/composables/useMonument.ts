@@ -20,10 +20,10 @@ export function useMonument(slugParam: Ref<string | string[] | null>) {
   const previousLocale = useState<string>(`monument-locale-${slug.value}`, () => locale.value)
 
   const fetchBySlug = (slugValue: string, localeValue: string) =>
-    $fetch<Monument>(`${baseURL}/api/monuments/${slugValue}?locale=${localeValue}`)
+    $fetch<Monument>(`${baseURL}/api/monuments/${slugValue}?locale=${localeValue}&populate[seo][populate]=*`)
 
   const fetchByDocumentId = (docId: string, localeValue: string) =>
-    $fetch<Monument>(`${baseURL}/api/monuments/by-document-id/${docId}?locale=${localeValue}`)
+    $fetch<Monument>(`${baseURL}/api/monuments/by-document-id/${docId}?locale=${localeValue}&populate[seo][populate]=*`)
 
   const updateUrlForNewSlug = async (newSlug: string) => {
     if (newSlug && newSlug !== slug.value) {
