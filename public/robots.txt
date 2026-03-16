@@ -1,5 +1,4 @@
 User-Agent: *
 Allow: /
 
-# Sitemap (uncomment when deployed with your domain)
-# Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://hipomonument.cz/sitemap.xml
