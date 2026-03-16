@@ -44,6 +44,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
+    '@nuxtjs/sitemap',
   ],
 
   leaflet: {
@@ -58,6 +59,12 @@ export default defineNuxtConfig({
     defaultLocale: 'cs',
     strategy: 'prefix_except_default',
     detectBrowserLanguage: false,
+  },
+
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls',
+    ],
   },
 
   runtimeConfig: {
