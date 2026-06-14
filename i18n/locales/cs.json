@@ -47,7 +47,8 @@
     },
     "location": {
       "errorGetting": "Nepodařilo se získat polohu",
-      "notAvailable": "Geolokace není dostupná"
+      "notAvailable": "Geolokace není dostupná",
+      "findMe": "Najít mou polohu"
     }
   },
   "monument": {

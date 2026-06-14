@@ -47,7 +47,8 @@
     },
     "location": {
       "errorGetting": "Could not get location",
-      "notAvailable": "Geolocation is not available"
+      "notAvailable": "Geolocation is not available",
+      "findMe": "Find my location"
     }
   },
   "monument": {

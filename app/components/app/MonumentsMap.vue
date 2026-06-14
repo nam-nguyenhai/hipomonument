@@ -288,10 +288,76 @@ async function updateCluster() {
   }
 }
 
+// ---- User geolocation ("you are here" red dot) ----
+const isLocating = ref(false)
+let userMarker: any = null
+let accuracyCircle: any = null
+
+function showUserLocation(lat: number, lng: number, accuracy: number, zoomIn: boolean) {
+  const leafletMap = mapRef.value?.leafletObject
+  if (!leafletMap)
+    return
+  if (userMarker)
+    leafletMap.removeLayer(userMarker)
+  if (accuracyCircle)
+    leafletMap.removeLayer(accuracyCircle)
+
+  const icon = L.divIcon({
+    className: 'user-location-marker',
+    html: '<span class="ulm-pulse"></span><span class="ulm-dot"></span>',
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+  })
+  userMarker = L.marker([lat, lng], { icon, zIndexOffset: 1000, interactive: false }).addTo(leafletMap)
+  if (accuracy && accuracy < 2000) {
+    accuracyCircle = L.circle([lat, lng], {
+      radius: accuracy,
+      color: '#e11d48',
+      weight: 1,
+      fillColor: '#e11d48',
+      fillOpacity: 0.1,
+      interactive: false,
+    }).addTo(leafletMap)
+  }
+  if (zoomIn)
+    leafletMap.flyTo([lat, lng], 16, { duration: 1.2 })
+}
+
+// Request the user's position (browser prompts for permission) and drop the dot.
+function locateUser(zoomIn = true) {
+  if (!import.meta.client || !('geolocation' in navigator))
+    return
+  isLocating.value = true
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      isLocating.value = false
+      showUserLocation(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy, zoomIn)
+    },
+    (err) => {
+      isLocating.value = false
+      console.warn('Geolocation:', err.message)
+    },
+    { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 },
+  )
+}
+
 // When the map is ready
 async function onMapReady() {
   mapReady.value = true
   await updateCluster()
+
+  // Auto-locate only if permission was already granted — don't prompt new
+  // visitors unexpectedly on load (they use the locate button instead).
+  if (import.meta.client && navigator.permissions?.query) {
+    try {
+      const status = await navigator.permissions.query({ name: 'geolocation' as PermissionName })
+      if (status.state === 'granted')
+        locateUser(true)
+    }
+    catch {
+      // permissions API unavailable — ignore, button still works
+    }
+  }
 }
 
 // Watch for filter changes and update clusters
@@ -372,6 +438,31 @@ watch(() => selectedMonument, async (monument) => {
       />
     </LMap>
 
+    <!-- Locate-me button: asks for geolocation permission, drops a red "you are here" dot and zooms in -->
+    <button
+      type="button"
+      class="locate-btn absolute top-4 right-4 z-[1000] flex items-center justify-center w-11 h-11 rounded-full bg-cream/95 border border-tan/60 shadow-softer text-brown-dark hover:bg-cream hover:text-gold transition-colors disabled:opacity-60"
+      :title="t('map.location.findMe')"
+      :aria-label="t('map.location.findMe')"
+      :disabled="isLocating"
+      @click="locateUser(true)"
+    >
+      <svg
+        v-if="!isLocating"
+        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8a4 4 0 100 8 4 4 0 000-8z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v3m0 14v3m10-10h-3M5 12H2" />
+      </svg>
+      <svg
+        v-else
+        class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"
+      >
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+      </svg>
+    </button>
+
     <!-- Filter/Legend - Responsive parchment panel -->
     <div class="absolute bottom-0 left-0 right-0 md:bottom-4 md:right-4 md:left-auto bg-cream/90 backdrop-blur-sm md:rounded-xl border border-tan/60 shadow-softer z-[1000] md:max-w-[260px] overflow-hidden">
       <!-- Filter Header - Clickable on all sizes -->
@@ -423,6 +514,38 @@ watch(() => selectedMonument, async (monument) => {
 <style>
 .leaflet-popup {
   max-width: 330px;
+}
+
+/* "You are here" red dot with a pulsing halo */
+.user-location-marker {
+  position: relative;
+}
+.user-location-marker .ulm-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background: #e11d48;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+.user-location-marker .ulm-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background: rgba(225, 29, 72, 0.45);
+  border-radius: 50%;
+  animation: ulm-pulse 1.8s ease-out infinite;
+}
+@keyframes ulm-pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(3.2); opacity: 0; }
 }
 
 /* Custom marker icon styling */
