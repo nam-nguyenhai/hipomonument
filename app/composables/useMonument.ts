@@ -32,15 +32,22 @@ export function useMonument(slugParam: Ref<string | string[] | null>) {
   const { data: monument, error } = useAsyncData<Monument>(
     () => `monument-${locale.value}-${slug.value}`,
     async () => {
+      const want = locale.value
       // Prefer the slug; if it doesn't resolve in this locale (e.g. right after a
       // locale switch the URL still has the other locale's slug), fall back to the
       // documentId of the monument we already have loaded.
       try {
-        return await fetchBySlug(slug.value, locale.value)
+        const data = await fetchBySlug(slug.value, want)
+        // Guard: if the response is for the wrong locale (a misbehaving cache or
+        // a default-locale fallback), resolve by documentId instead. Don't trust
+        // a 200 alone.
+        if (data.locale && data.locale !== want && documentId.value)
+          return await fetchByDocumentId(documentId.value, want)
+        return data
       }
       catch (err) {
         if (documentId.value)
-          return await fetchByDocumentId(documentId.value, locale.value)
+          return await fetchByDocumentId(documentId.value, want)
         throw err
       }
     },

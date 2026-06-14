@@ -5,21 +5,13 @@ interface RecommendedResponse {
 }
 
 /**
- * Cached proxy: recommended monuments for a locale (Strapi custom route).
+ * Proxy: recommended monuments for a locale (Strapi custom route).
+ * Not cached here — see server/api/monuments/index.get.ts.
  */
-export default defineCachedEventHandler(
-  async (event) => {
-    const locale = getLocale(event)
-    const base = strapiBase(event)
-    return await $fetch<RecommendedResponse>(`${base}/api/recommended-monuments/with-locale`, {
-      params: { locale },
-    })
-  },
-  {
-    maxAge: 60 * 60,
-    staleMaxAge: 60 * 60 * 24,
-    swr: true,
-    name: 'recommended-monuments',
-    getKey: event => `recommended-${getLocale(event)}`,
-  },
-)
+export default defineEventHandler(async (event) => {
+  const locale = getLocale(event)
+  const base = strapiBase(event)
+  return await $fetch<RecommendedResponse>(`${base}/api/recommended-monuments/with-locale`, {
+    params: { locale },
+  })
+})

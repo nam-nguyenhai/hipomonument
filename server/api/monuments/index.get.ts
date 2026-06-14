@@ -1,26 +1,20 @@
 import type { FindMany, Monument } from '~/types/types'
 
 /**
- * Cached proxy: list all monuments for a locale.
- * Shields Strapi Cloud cold-starts behind a 1h-fresh / 24h-stale-while-revalidate cache.
+ * Proxy: list all monuments for a locale.
+ *
+ * Not cached at this layer — Vercel's edge cache keys by path and ignores the
+ * ?locale= query, which would serve wrong-locale data. The ISR page cache shields
+ * Strapi cold-starts instead.
  */
-export default defineCachedEventHandler(
-  async (event) => {
-    const locale = getLocale(event)
-    const base = strapiBase(event)
-    return await $fetch<FindMany<Monument>>(`${base}/api/monuments`, {
-      params: {
-        'populate': '*',
-        locale,
-        'pagination[pageSize]': 1000,
-      },
-    })
-  },
-  {
-    maxAge: 60 * 60, // fresh for 1h
-    staleMaxAge: 60 * 60 * 24, // serve stale up to 24h while revalidating in background
-    swr: true,
-    name: 'monuments-list',
-    getKey: event => `list-${getLocale(event)}`,
-  },
-)
+export default defineEventHandler(async (event) => {
+  const locale = getLocale(event)
+  const base = strapiBase(event)
+  return await $fetch<FindMany<Monument>>(`${base}/api/monuments`, {
+    params: {
+      'populate': '*',
+      locale,
+      'pagination[pageSize]': 1000,
+    },
+  })
+})
