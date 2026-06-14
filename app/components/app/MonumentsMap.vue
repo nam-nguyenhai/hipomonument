@@ -138,7 +138,13 @@ function createPopupHtml(monument: Monument): string {
   let html = `<div class="popup-content">`
 
   if (imageUrl) {
-    html += `<img src="${imageUrl}" alt="${monument.title.replace(/"/g, '&quot;')}" class="popup-image" />`
+    const safeAlt = monument.title.replace(/"/g, '&quot;')
+    // Full (uncropped) image over a blurred fill of itself — handles portrait
+    // images gracefully instead of center-cropping them (looked "zoomed").
+    html += `<div class="popup-image-wrap">`
+      + `<img src="${imageUrl}" alt="" aria-hidden="true" class="popup-image-bg" />`
+      + `<img src="${imageUrl}" alt="${safeAlt}" class="popup-image" />`
+      + `</div>`
   }
 
   html += `
@@ -509,12 +515,31 @@ watch(() => selectedMonument, async (monument) => {
   width: 260px;
 }
 
-.popup-image {
+.popup-image-wrap {
+  position: relative;
   width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
+  height: 160px;
   margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #efe9dc;
+}
+
+.popup-image-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.15);
+  filter: blur(16px) brightness(0.95) sepia(0.4) contrast(1.1);
+}
+
+.popup-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   filter: sepia(0.4) contrast(1.1);
 }
 
