@@ -10,6 +10,7 @@ import type { Monument } from '~/types/types'
  */
 export function useMonument(slugParam: Ref<string | string[] | null>) {
   const { locale, defaultLocale } = useI18n()
+  const { public: { baseURL } } = useRuntimeConfig()
 
   // Normalize slug to string
   const slug = computed(() => {
@@ -23,11 +24,14 @@ export function useMonument(slugParam: Ref<string | string[] | null>) {
   // when the current (foreign-locale) slug no longer resolves after a switch.
   const documentId = useState<string | null>('monument-documentId', () => null)
 
+  // Call Strapi directly (with ?locale). A local /api proxy layer was tried for
+  // caching but Vercel dropped/ignored the locale query, serving wrong-locale
+  // data. ISR page caching already shields cold-starts; Strapi reads ?locale fine.
   const fetchBySlug = (slugValue: string, localeValue: string) =>
-    $fetch<Monument>(`/api/monuments/${slugValue}`, { params: { locale: localeValue } })
+    $fetch<Monument>(`${baseURL}/api/monuments/${slugValue}?locale=${localeValue}&populate[seo][populate]=*`)
 
   const fetchByDocumentId = (docId: string, localeValue: string) =>
-    $fetch<Monument>(`/api/monuments/by-document-id/${docId}`, { params: { locale: localeValue } })
+    $fetch<Monument>(`${baseURL}/api/monuments/by-document-id/${docId}?locale=${localeValue}&populate[seo][populate]=*`)
 
   const { data: monument, error } = useAsyncData<Monument>(
     () => `monument-${locale.value}-${slug.value}`,

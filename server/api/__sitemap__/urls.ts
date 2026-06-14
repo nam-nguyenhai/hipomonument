@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { asSitemapUrl, defineSitemapEventHandler } from '#imports'
 
 interface StrapiMonument {
@@ -14,10 +15,11 @@ interface StrapiResponse {
 }
 
 export default defineSitemapEventHandler(async () => {
-  // Use the cached internal proxy routes instead of hitting Strapi directly.
+  const baseURL = process.env.NUXT_BASE_URL || ''
+
   const [csResponse, enResponse] = await Promise.all([
-    $fetch<StrapiResponse>('/api/monuments', { params: { locale: 'cs' } }),
-    $fetch<StrapiResponse>('/api/monuments', { params: { locale: 'en' } }),
+    $fetch<StrapiResponse>(`${baseURL}/api/monuments?populate=seo&locale=cs&pagination[pageSize]=1000`),
+    $fetch<StrapiResponse>(`${baseURL}/api/monuments?populate=seo&locale=en&pagination[pageSize]=1000`),
   ])
 
   const urls = []
