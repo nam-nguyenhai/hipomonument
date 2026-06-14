@@ -1,4 +1,4 @@
-import { defineSitemapEventHandler, asSitemapUrl } from '#imports'
+import { asSitemapUrl, defineSitemapEventHandler } from '#imports'
 
 interface StrapiMonument {
   slug: string
@@ -14,11 +14,10 @@ interface StrapiResponse {
 }
 
 export default defineSitemapEventHandler(async () => {
-  const baseURL = process.env.NUXT_BASE_URL || ''
-
+  // Use the cached internal proxy routes instead of hitting Strapi directly.
   const [csResponse, enResponse] = await Promise.all([
-    $fetch<StrapiResponse>(`${baseURL}/api/monuments?populate=seo&locale=cs&pagination[pageSize]=1000`),
-    $fetch<StrapiResponse>(`${baseURL}/api/monuments?populate=seo&locale=en&pagination[pageSize]=1000`),
+    $fetch<StrapiResponse>('/api/monuments', { params: { locale: 'cs' } }),
+    $fetch<StrapiResponse>('/api/monuments', { params: { locale: 'en' } }),
   ])
 
   const urls = []

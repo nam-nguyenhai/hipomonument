@@ -2,7 +2,6 @@
 import type { FindMany, Monument } from '~/types/types'
 
 const { t, locale } = useI18n()
-const { public: { baseURL } } = useRuntimeConfig()
 
 // SEO
 useSeoMeta({
@@ -18,7 +17,8 @@ const { data: monuments } = await useAsyncData<Monument[]>(
   `monuments-${locale.value}`,
   async () => {
     const response = await $fetch<FindMany<Monument>>(
-      `${baseURL}/api/monuments?populate=*&locale=${locale.value}&pagination[pageSize]=1000`,
+      `/api/monuments`,
+      { params: { locale: locale.value } },
     )
     return response.data
   },

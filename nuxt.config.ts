@@ -37,6 +37,16 @@ export default defineNuxtConfig({
       ],
     },
   },
+  // Caching: shield the slow Strapi Cloud ($10 tier cold-starts) behind Vercel's edge.
+  // Pages are rendered once, served from cache, revalidated in the background (ISR).
+  // Cached /api/** proxy routes back this and the client-side locale switch.
+  routeRules: {
+    '/': { isr: 3600 },
+    '/en': { isr: 3600 },
+    '/**': { isr: 3600 },
+    '/api/**': { swr: 3600 },
+  },
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/image',

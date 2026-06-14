@@ -6,12 +6,12 @@ import type { Monument } from '~/types/types'
  */
 export function useMonument(slugParam: Ref<string | string[] | null>) {
   const { locale, defaultLocale } = useI18n()
-  const { public: { baseURL } } = useRuntimeConfig()
 
   // Normalize slug to string
   const slug = computed(() => {
     const value = slugParam.value
-    if (Array.isArray(value)) return value[0] || ''
+    if (Array.isArray(value))
+      return value[0] || ''
     return value || ''
   })
 
@@ -20,10 +20,10 @@ export function useMonument(slugParam: Ref<string | string[] | null>) {
   const previousLocale = useState<string>(`monument-locale-${slug.value}`, () => locale.value)
 
   const fetchBySlug = (slugValue: string, localeValue: string) =>
-    $fetch<Monument>(`${baseURL}/api/monuments/${slugValue}?locale=${localeValue}&populate[seo][populate]=*`)
+    $fetch<Monument>(`/api/monuments/${slugValue}`, { params: { locale: localeValue } })
 
   const fetchByDocumentId = (docId: string, localeValue: string) =>
-    $fetch<Monument>(`${baseURL}/api/monuments/by-document-id/${docId}?locale=${localeValue}&populate[seo][populate]=*`)
+    $fetch<Monument>(`/api/monuments/by-document-id/${docId}`, { params: { locale: localeValue } })
 
   const updateUrlForNewSlug = async (newSlug: string) => {
     if (newSlug && newSlug !== slug.value) {

@@ -13,14 +13,13 @@ export interface RecommendedMonumentsResponse {
  */
 export function useRecommendedMonuments() {
   const { locale } = useI18n()
-  const { public: { baseURL } } = useRuntimeConfig()
 
   const { data: monuments, error, status, refresh } = useAsyncData<Monument[]>(
     () => `recommended-monuments-${locale.value}`,
     async () => {
       try {
         const response = await $fetch<RecommendedMonumentsResponse>(
-          `${baseURL}/api/recommended-monuments/with-locale`,
+          `/api/recommended-monuments`,
           {
             params: {
               locale: locale.value,
