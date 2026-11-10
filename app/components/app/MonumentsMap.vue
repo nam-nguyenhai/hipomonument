@@ -2,6 +2,7 @@
 import type { Monument } from '~/types/types'
 import L from 'leaflet'
 import 'leaflet.markercluster'
+import 'maplibre-gl/dist/maplibre-gl.css'
 
 const { monuments, selectedMonument } = defineProps<{
   monuments: Monument[]
@@ -343,6 +344,9 @@ function locateUser(zoomIn = true) {
 
 // When the map is ready
 async function onMapReady() {
+  const { maplibreGL } = await import('@maplibre/maplibre-gl-leaflet')
+  maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron' }).addTo(mapRef.value.leafletObject)
+
   mapReady.value = true
   await updateCluster()
 
@@ -430,13 +434,7 @@ watch(() => selectedMonument, async (monument) => {
       :use-global-leaflet="true"
       class="w-full h-full"
       @ready="onMapReady"
-    >
-      <LTileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors &copy; <a href='https://carto.com/attributions'>CARTO</a>"
-        :max-zoom="19"
-      />
-    </LMap>
+    />
 
     <!-- Locate-me button: asks for geolocation permission, drops a red "you are here" dot and zooms in -->
     <button
