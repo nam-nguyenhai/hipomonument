@@ -345,7 +345,9 @@ function locateUser(zoomIn = true) {
 // When the map is ready
 async function onMapReady() {
   const { maplibreGL } = await import('@maplibre/maplibre-gl-leaflet')
-  maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron' }).addTo(mapRef.value.leafletObject)
+  const leafletMap = mapRef.value.leafletObject
+  maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron' }).addTo(leafletMap)
+  leafletMap.attributionControl.addAttribution('<a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>')
 
   mapReady.value = true
   await updateCluster()
@@ -432,6 +434,7 @@ watch(() => selectedMonument, async (monument) => {
       :zoom="zoom"
       :center="[center.lat, center.lng]"
       :use-global-leaflet="true"
+      :max-zoom="19"
       class="w-full h-full"
       @ready="onMapReady"
     />
